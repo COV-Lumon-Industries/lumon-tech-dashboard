@@ -17,7 +17,7 @@ export interface IAuthContext {
 
 const AuthContext = React.createContext<IAuthContext | null>(null);
 
-const STORAGE_KEY = "lumon_auth_user";
+export const STORAGE_KEY = 'lumon_auth_user';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = React.useState<user | null>(() => {
@@ -30,8 +30,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const isAuthenticated = !!user;
 
-  console.log(isAuthenticated);
-
   const logout = React.useCallback(async () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem(STORAGE_KEY);
@@ -41,6 +39,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = React.useCallback(async (data: user) => {
     if (typeof window !== "undefined") {
+      console.log(data, "data")
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
     setUser(data);

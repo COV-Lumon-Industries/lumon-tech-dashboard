@@ -37,13 +37,18 @@ const http = axios.create({
   },
 });
 
-http.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers["Authorization"] = `Bearer ${token}`;
+http.interceptors.request.use(
+  (config) => {
+    if (typeof window === 'undefined') {
+      return config;
+    }
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
   }
-  return config;
-});
+);
 
 http.interceptors.response.use(
   (response) => response.data,

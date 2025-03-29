@@ -15,10 +15,11 @@ export const Route = createFileRoute("/_auth/login")({
 function RouteComponent() {
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: postLoginUser,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       login({
         token: data.data.token,
         ...data.data.user,
