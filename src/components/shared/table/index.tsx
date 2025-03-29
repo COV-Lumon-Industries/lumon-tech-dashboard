@@ -31,7 +31,7 @@ import { DataTableContent } from './data-table-content';
 import { DataTableToolbar } from './data-table-toolbar';
 import { DataTablePagination } from './data-table-pagination';
 import { TableFacetProps } from '@/types';
-import { cn } from '@/lib/utils';
+import { cn, globalTableFilterFn } from '@/lib/utils';
 
 interface DataTableProps<TData, TValue> {
   data: TData[];

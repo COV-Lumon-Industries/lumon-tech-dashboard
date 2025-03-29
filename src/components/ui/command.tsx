@@ -8,10 +8,8 @@ import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/omponents/ui/dialog";
+  DialogDescription, DialogHeader, DialogTitle
+} from "./dialog";
 
 function Command({
   className,
@@ -173,5 +171,6 @@ export {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
+  CommandShortcut
 };
+

@@ -15,7 +15,7 @@ type Input = React.ComponentProps<"input"> & {
 
 const Input = React.forwardRef<HTMLInputElement, Input>(
   ({ className, type, fieldInfo, ...props }, ref) => {
-    const [showPassword, setShowPassword] = useState(type === "password" ? false : true);
+    const [showPassword, setShowPassword] = React.useState(type === "password" ? false : true);
     const field = fieldInfo;
 
     return (

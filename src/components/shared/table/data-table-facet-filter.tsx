@@ -20,7 +20,8 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib';
+import { cn } from '@/lib/utils';
+
 
 
 interface DataTableFacetedFilterProps<TData, TValue> {

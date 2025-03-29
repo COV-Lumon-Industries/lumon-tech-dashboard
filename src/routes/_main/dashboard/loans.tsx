@@ -2,6 +2,7 @@ import { DataTable } from '@/components/shared/table'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
+
 import { columns } from '@/features/loans/columns'
 import CreditScoreCard from '@/features/loans/credit-score'
 import { RequestLoanDialog } from '@/features/loans/request-loan'

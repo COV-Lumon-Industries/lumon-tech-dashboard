@@ -44,7 +44,7 @@ function RouteComponent() {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex-1 overflow-auto px-6 py-8">
+        <div className=" px-6 py-8">
           <Outlet />
         </div>
       </SidebarInset>
