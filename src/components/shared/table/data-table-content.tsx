@@ -2,7 +2,6 @@ import { ColumnDef, flexRender, Table } from "@tanstack/react-table";
 
 import { TableCell, TableRow } from "@/components/ui/table";
 
-
 type DataTableContentProps<TData, TValue> = {
   isLoading: boolean;
   table: Table<TData>;

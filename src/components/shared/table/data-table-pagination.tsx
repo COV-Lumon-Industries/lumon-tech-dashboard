@@ -1,30 +1,26 @@
-import { Table } from '@tanstack/react-table';
+import { Table } from "@tanstack/react-table";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
-} from '@radix-ui/react-icons';
+} from "@radix-ui/react-icons";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-
-
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
   resetScroll: () => void;
 }
-const PAGINATION_SIZES=[
-  5,10,20
-]
+const PAGINATION_SIZES = [5, 10, 20];
 
 export function DataTablePagination<TData>({
   table,
@@ -33,16 +29,14 @@ export function DataTablePagination<TData>({
     <div className="flex flex-col items-start space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 px-2">
       <div className="flex-1 text-muted-foreground">
         <p>
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
+          {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </p>
       </div>
 
       <div className="flex flex-col items-start space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4 lg:space-x-6">
         <div className="flex items-center space-x-2">
-          <p className="text-muted-foreground">
-            Rows per page
-          </p>
+          <p className="text-muted-foreground">Rows per page</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -79,7 +73,7 @@ export function DataTablePagination<TData>({
         <div className=" flex flex-row items-center">
           <div className="flex w-full justify-start sm:w-auto sm:justify-center">
             <p className="text-muted-foreground text-sm">
-              Page {table.getState().pagination.pageIndex + 1} of{' '}
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
               {table.getPageCount()}
             </p>
           </div>

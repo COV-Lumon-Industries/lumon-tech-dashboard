@@ -14,12 +14,15 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
+import { Route as MainTransactionsImport } from './routes/_main/transactions'
 import { Route as MainDashboardImport } from './routes/_main/dashboard'
 import { Route as MainChatImport } from './routes/_main/chat'
 import { Route as AuthSignupImport } from './routes/_auth/signup'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as MainDashboardIndexImport } from './routes/_main/dashboard/index'
 import { Route as MainDashboardLoansImport } from './routes/_main/dashboard/loans'
+import { Route as MainDashboardFileUploadImport } from './routes/_main/dashboard/file-upload'
+import { Route as MainDashboardAddAccountImport } from './routes/_main/dashboard/add-account'
 
 // Create/Update Routes
 
@@ -36,6 +39,12 @@ const AuthRoute = AuthImport.update({
 const MainIndexRoute = MainIndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainTransactionsRoute = MainTransactionsImport.update({
+  id: '/transactions',
+  path: '/transactions',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -72,6 +81,18 @@ const MainDashboardIndexRoute = MainDashboardIndexImport.update({
 const MainDashboardLoansRoute = MainDashboardLoansImport.update({
   id: '/loans',
   path: '/loans',
+  getParentRoute: () => MainDashboardRoute,
+} as any)
+
+const MainDashboardFileUploadRoute = MainDashboardFileUploadImport.update({
+  id: '/file-upload',
+  path: '/file-upload',
+  getParentRoute: () => MainDashboardRoute,
+} as any)
+
+const MainDashboardAddAccountRoute = MainDashboardAddAccountImport.update({
+  id: '/add-account',
+  path: '/add-account',
   getParentRoute: () => MainDashboardRoute,
 } as any)
 
@@ -121,12 +142,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainDashboardImport
       parentRoute: typeof MainImport
     }
+    '/_main/transactions': {
+      id: '/_main/transactions'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof MainTransactionsImport
+      parentRoute: typeof MainImport
+    }
     '/_main/': {
       id: '/_main/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof MainIndexImport
       parentRoute: typeof MainImport
+    }
+    '/_main/dashboard/add-account': {
+      id: '/_main/dashboard/add-account'
+      path: '/add-account'
+      fullPath: '/dashboard/add-account'
+      preLoaderRoute: typeof MainDashboardAddAccountImport
+      parentRoute: typeof MainDashboardImport
+    }
+    '/_main/dashboard/file-upload': {
+      id: '/_main/dashboard/file-upload'
+      path: '/file-upload'
+      fullPath: '/dashboard/file-upload'
+      preLoaderRoute: typeof MainDashboardFileUploadImport
+      parentRoute: typeof MainDashboardImport
     }
     '/_main/dashboard/loans': {
       id: '/_main/dashboard/loans'
@@ -160,11 +202,15 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MainDashboardRouteChildren {
+  MainDashboardAddAccountRoute: typeof MainDashboardAddAccountRoute
+  MainDashboardFileUploadRoute: typeof MainDashboardFileUploadRoute
   MainDashboardLoansRoute: typeof MainDashboardLoansRoute
   MainDashboardIndexRoute: typeof MainDashboardIndexRoute
 }
 
 const MainDashboardRouteChildren: MainDashboardRouteChildren = {
+  MainDashboardAddAccountRoute: MainDashboardAddAccountRoute,
+  MainDashboardFileUploadRoute: MainDashboardFileUploadRoute,
   MainDashboardLoansRoute: MainDashboardLoansRoute,
   MainDashboardIndexRoute: MainDashboardIndexRoute,
 }
@@ -176,12 +222,14 @@ const MainDashboardRouteWithChildren = MainDashboardRoute._addFileChildren(
 interface MainRouteChildren {
   MainChatRoute: typeof MainChatRoute
   MainDashboardRoute: typeof MainDashboardRouteWithChildren
+  MainTransactionsRoute: typeof MainTransactionsRoute
   MainIndexRoute: typeof MainIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainChatRoute: MainChatRoute,
   MainDashboardRoute: MainDashboardRouteWithChildren,
+  MainTransactionsRoute: MainTransactionsRoute,
   MainIndexRoute: MainIndexRoute,
 }
 
@@ -193,7 +241,10 @@ export interface FileRoutesByFullPath {
   '/signup': typeof AuthSignupRoute
   '/chat': typeof MainChatRoute
   '/dashboard': typeof MainDashboardRouteWithChildren
+  '/transactions': typeof MainTransactionsRoute
   '/': typeof MainIndexRoute
+  '/dashboard/add-account': typeof MainDashboardAddAccountRoute
+  '/dashboard/file-upload': typeof MainDashboardFileUploadRoute
   '/dashboard/loans': typeof MainDashboardLoansRoute
   '/dashboard/': typeof MainDashboardIndexRoute
 }
@@ -203,7 +254,10 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/chat': typeof MainChatRoute
+  '/transactions': typeof MainTransactionsRoute
   '/': typeof MainIndexRoute
+  '/dashboard/add-account': typeof MainDashboardAddAccountRoute
+  '/dashboard/file-upload': typeof MainDashboardFileUploadRoute
   '/dashboard/loans': typeof MainDashboardLoansRoute
   '/dashboard': typeof MainDashboardIndexRoute
 }
@@ -216,7 +270,10 @@ export interface FileRoutesById {
   '/_auth/signup': typeof AuthSignupRoute
   '/_main/chat': typeof MainChatRoute
   '/_main/dashboard': typeof MainDashboardRouteWithChildren
+  '/_main/transactions': typeof MainTransactionsRoute
   '/_main/': typeof MainIndexRoute
+  '/_main/dashboard/add-account': typeof MainDashboardAddAccountRoute
+  '/_main/dashboard/file-upload': typeof MainDashboardFileUploadRoute
   '/_main/dashboard/loans': typeof MainDashboardLoansRoute
   '/_main/dashboard/': typeof MainDashboardIndexRoute
 }
@@ -229,7 +286,10 @@ export interface FileRouteTypes {
     | '/signup'
     | '/chat'
     | '/dashboard'
+    | '/transactions'
     | '/'
+    | '/dashboard/add-account'
+    | '/dashboard/file-upload'
     | '/dashboard/loans'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -238,7 +298,10 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/chat'
+    | '/transactions'
     | '/'
+    | '/dashboard/add-account'
+    | '/dashboard/file-upload'
     | '/dashboard/loans'
     | '/dashboard'
   id:
@@ -249,7 +312,10 @@ export interface FileRouteTypes {
     | '/_auth/signup'
     | '/_main/chat'
     | '/_main/dashboard'
+    | '/_main/transactions'
     | '/_main/'
+    | '/_main/dashboard/add-account'
+    | '/_main/dashboard/file-upload'
     | '/_main/dashboard/loans'
     | '/_main/dashboard/'
   fileRoutesById: FileRoutesById
@@ -291,6 +357,7 @@ export const routeTree = rootRoute
       "children": [
         "/_main/chat",
         "/_main/dashboard",
+        "/_main/transactions",
         "/_main/"
       ]
     },
@@ -310,13 +377,27 @@ export const routeTree = rootRoute
       "filePath": "_main/dashboard.tsx",
       "parent": "/_main",
       "children": [
+        "/_main/dashboard/add-account",
+        "/_main/dashboard/file-upload",
         "/_main/dashboard/loans",
         "/_main/dashboard/"
       ]
     },
+    "/_main/transactions": {
+      "filePath": "_main/transactions.tsx",
+      "parent": "/_main"
+    },
     "/_main/": {
       "filePath": "_main/index.tsx",
       "parent": "/_main"
+    },
+    "/_main/dashboard/add-account": {
+      "filePath": "_main/dashboard/add-account.tsx",
+      "parent": "/_main/dashboard"
+    },
+    "/_main/dashboard/file-upload": {
+      "filePath": "_main/dashboard/file-upload.tsx",
+      "parent": "/_main/dashboard"
     },
     "/_main/dashboard/loans": {
       "filePath": "_main/dashboard/loans.tsx",

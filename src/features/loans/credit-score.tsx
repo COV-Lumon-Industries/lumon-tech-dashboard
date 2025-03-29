@@ -77,8 +77,6 @@ export default function CreditScoreCard() {
     },
   } satisfies ChartConfig;
 
-  
-
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -140,8 +138,6 @@ export default function CreditScoreCard() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-
-  
         <div className="mt-2 text-center font-medium" style={{ color }}>
           {loanChance}% chance of loan approval
         </div>

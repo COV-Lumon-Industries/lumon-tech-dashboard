@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useMutation } from '@tanstack/react-query';
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
-import { useForm } from '@tanstack/react-form';
-import { postLoginUser } from '@/services';
-import { AxiosError } from 'axios';
-import { toast } from 'sonner';
-import { useAuth } from '@/context/auth-provider';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
+import { postLoginUser } from "@/services";
+import { AxiosError } from "axios";
+import { toast } from "sonner";
+import { useAuth } from "@/context/auth-provider";
 
 export const Route = createFileRoute("/_auth/login")({
   component: RouteComponent,
@@ -15,10 +15,11 @@ export const Route = createFileRoute("/_auth/login")({
 function RouteComponent() {
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const { mutate, isPending } = useMutation({
-    mutationKey: ['login'],
+    mutationKey: ["login"],
     mutationFn: postLoginUser,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       login({
         token: data.data.token,
         ...data.data.user,
@@ -29,20 +30,18 @@ function RouteComponent() {
       });
     },
     onError: (err) => {
-      const error = err as AxiosError<{ data: string }>
-      toast(
-        "An error occured",
-        { 
-          description: error.response?.data.data,
-          descriptionClassName: "!text-neutral-700"
-       });
+      const error = err as AxiosError<{ data: string }>;
+      toast("An error occured", {
+        description: error.response?.data.data,
+        descriptionClassName: "!text-neutral-700",
+      });
     },
   });
 
   const { handleSubmit, Field } = useForm({
     defaultValues: {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
     },
     onSubmit: async ({ value }) => {
       mutate(value);
@@ -50,11 +49,15 @@ function RouteComponent() {
   });
 
   return (
-    <div className='w-full h-screen flex flex-row'>
-      <div className='lg:w-1/2 lg:flex hidden bg-primary'></div>
-      <div className='relative flex lg:w-1/2 w-full h-full items-center justify-center '>
-        <img src='/lumon.png' alt='lumon logo' className='absolute top-0 left-0 w-16 h-16 object-cover' />
-        <form 
+    <div className="w-full h-screen flex flex-row">
+      <div className="lg:w-1/2 lg:flex hidden bg-primary"></div>
+      <div className="relative flex lg:w-1/2 w-full h-full items-center justify-center ">
+        <img
+          src="/lumon.png"
+          alt="lumon logo"
+          className="absolute top-0 left-0 w-16 h-16 object-cover"
+        />
+        <form
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -69,9 +72,9 @@ function RouteComponent() {
               validators={{
                 onChange: ({ value }) =>
                   !value
-                    ? 'A first name is required'
+                    ? "A first name is required"
                     : value.length < 3
-                      ? 'First name must be at least 3 characters'
+                      ? "First name must be at least 3 characters"
                       : undefined,
               }}
               children={(field) => {
@@ -79,8 +82,8 @@ function RouteComponent() {
                   <>
                     <Input
                       id={field.name}
-                      label='Username'
-                      placeholder='Username'
+                      label="Username"
+                      placeholder="Username"
                       name={field.name}
                       value={field.state.value}
                       onBlur={field.handleBlur}
@@ -111,9 +114,12 @@ function RouteComponent() {
                 );
               }}
             />
-            <Link to='/signup' className='text-xs'>Don't have an account? <span className='text-primary'>Create here</span></Link>
+            <Link to="/signup" className="text-xs">
+              Don't have an account?{" "}
+              <span className="text-primary">Create here</span>
+            </Link>
           </div>
-          <Button isLoading={isPending} className='w-full'>
+          <Button isLoading={isPending} className="w-full">
             Login
           </Button>
         </form>
