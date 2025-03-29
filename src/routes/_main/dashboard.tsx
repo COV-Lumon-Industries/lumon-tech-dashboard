@@ -93,6 +93,7 @@ const transactions = [
     type: "income",
   },
 ];
+
 function RouteComponent() {
   const [accounts] = useState<Account[]>(accountsData);
 
