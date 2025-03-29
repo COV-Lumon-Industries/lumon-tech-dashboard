@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-import { TrendingDown, TrendingUp } from "lucide-react";
 import {
   Label,
   PolarGrid,
@@ -142,26 +141,8 @@ export default function CreditScoreCard() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          {trending.up ? (
-            <>
-              Trending up by {trending.value}% this month{" "}
-              <TrendingUp className="h-4 w-4 text-green-500" />
-            </>
-          ) : (
-            <>
-              Trending down by {trending.value}% this month{" "}
-              <TrendingDown className="h-4 w-4 text-red-500" />
-            </>
-          )}
-        </div>
-        <div className="leading-none text-muted-foreground">
-          <span className="font-medium text-green-500">800-1000</span>:
-          Excellent |
-          <span className="font-medium text-yellow-500"> 700-799</span>: Good |
-          <span className="font-medium text-orange-500"> 600-699</span>: Fair |
-          <span className="font-medium text-red-500"> 0-599</span>: Poor
-        </div>
+
+  
         <div className="mt-2 text-center font-medium" style={{ color }}>
           {loanChance}% chance of loan approval
         </div>
