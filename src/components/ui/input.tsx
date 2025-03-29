@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import * as React from "react";
+
 import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
 import { AnyFieldApi } from "@tanstack/react-form";
@@ -16,6 +17,7 @@ const Input = React.forwardRef<HTMLInputElement, Input>(
   ({ className, type, fieldInfo, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(type === "password" ? false : true);
     const field = fieldInfo;
+
     return (
       <div className={cn("relative flex w-full flex-col gap-2", props.labelClassName)}>
         {props.label && (
@@ -29,15 +31,16 @@ const Input = React.forwardRef<HTMLInputElement, Input>(
             {props.label}
           </label>
         )}
-        <input
-          type={showPassword ? "text" : type}
-          className={cn(
-            "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-            className
-          )}
-          ref={ref}
-          {...props}
-        />
+        <div className="relative w-full">
+          <input
+            type={showPassword ? "text" : type}
+            className={cn(
+              "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+              className
+            )}
+            ref={ref}
+            {...props}
+          />
         {type === "password" && (
           <button
             type="button"
@@ -47,10 +50,11 @@ const Input = React.forwardRef<HTMLInputElement, Input>(
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
         )}
+        </div>
         {
           field?.state.meta.isTouched && field.state.meta.errors.length 
             ? (
-              <em>{field.state.meta.errors.join(', ')}</em>
+              <em className="text-xs text-red-700">{field.state.meta.errors.map(error => error.message).join(", ")}</em>
             ) : null
         }
       </div>
