@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { columns } from "@/features/loans/columns";
 import CreditScoreCard from "@/features/loans/credit-score";
 import { RequestLoanDialog } from "@/features/loans/request-loan";
+import { GetAllLoans } from "@/services/loans";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { CreditCardIcon } from "lucide-react";
 
@@ -14,6 +16,11 @@ export const Route = createFileRoute("/_main/dashboard/loans")({
 });
 
 function RouteComponent() {
+  const {data,isLoading} = useQuery({
+    queryKey:["loans"],
+    queryFn:GetAllLoans
+  })
+  console.log("HERE",data)
   return (
     <div className="w-full min-h-screen pb-8">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mb-4">
