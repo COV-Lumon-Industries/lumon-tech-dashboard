@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 
 import appCss from "@/styles/app.css?url";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from '@/components/ui/sonner';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -42,6 +43,7 @@ function RootComponent() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Outlet />
+          <Toaster />
         </AuthProvider>
       </QueryClientProvider>
     </RootDocument>
