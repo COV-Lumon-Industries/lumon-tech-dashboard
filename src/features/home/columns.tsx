@@ -55,7 +55,8 @@ export const columns: ColumnDef<Transaction>[] = [
     accessorKey:"",
     header:"Actions",
     cell: ({ row }) => {
-        <div>Add a table action/ dropdown if you want</div>
+        console.log(row.original.amount)
+     return   <div>Add a table action/ dropdown if you want</div>
     }
 
   }

@@ -1,14 +1,6 @@
 import { DataTable } from "@/components/shared/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { columns } from "@/features/home/columns";
 import { createFileRoute } from '@tanstack/react-router';
 import { DollarSign } from "lucide-react";
@@ -57,44 +49,44 @@ const revenueData = [
   { month: "Dec", income: 11000, expenses: 6000 },
 ];
 
-const transactions = [
-  {
-    id: 1,
-    description: "Salary Payment",
-    date: "2025-03-25",
-    amount: 2500.0,
-    category: "Salary",
-    status: "completed",
-    type: "income",
-  },
-  {
-    id: 2,
-    description: "Rent Payment",
-    date: "2025-03-22",
-    amount: 1200.0,
-    category: "Housing",
-    status: "completed",
-    type: "expense",
-  },
-  {
-    id: 3,
-    description: "Grocery Shopping",
-    date: "2025-03-20",
-    amount: 156.78,
-    category: "Food",
-    status: "completed",
-    type: "expense",
-  },
-  {
-    id: 4,
-    description: "Freelance Work",
-    date: "2025-03-18",
-    amount: 750.0,
-    category: "Contract Work",
-    status: "pending",
-    type: "income",
-  },
-];
+// const transactions = [
+//   {
+//     id: 1,
+//     description: "Salary Payment",
+//     date: "2025-03-25",
+//     amount: 2500.0,
+//     category: "Salary",
+//     status: "completed",
+//     type: "income",
+//   },
+//   {
+//     id: 2,
+//     description: "Rent Payment",
+//     date: "2025-03-22",
+//     amount: 1200.0,
+//     category: "Housing",
+//     status: "completed",
+//     type: "expense",
+//   },
+//   {
+//     id: 3,
+//     description: "Grocery Shopping",
+//     date: "2025-03-20",
+//     amount: 156.78,
+//     category: "Food",
+//     status: "completed",
+//     type: "expense",
+//   },
+//   {
+//     id: 4,
+//     description: "Freelance Work",
+//     date: "2025-03-18",
+//     amount: 750.0,
+//     category: "Contract Work",
+//     status: "pending",
+//     type: "income",
+//   },
+// ];
 
 function RouteComponent() {
   const [accounts] = useState<Account[]>(accountsData);

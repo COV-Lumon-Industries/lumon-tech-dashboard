@@ -77,8 +77,7 @@ export default function CreditScoreCard() {
     },
   } satisfies ChartConfig;
 
-  // Determine if score is trending up or down (sample data)
-  const trending = { value: 2.8, up: true };
+  
 
   return (
     <Card className="flex flex-col">
