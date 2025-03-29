@@ -33,11 +33,11 @@ function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center w-full">
       <CardTitle className="text-4xl font-bold mb-4 text-foreground">
-        TanStack Chat
+        Lumon Chat
       </CardTitle>
-      <p className="text-foreground text-center max-w-sm font-medium mb-4">
-        You can ask me about anything, I might or might not have a good answer,
-        but you can still ask.
+      <p className="text-foreground text-center max-w-lg font-medium mb-4">
+        Hi there I am Lumon ⭐, I am here to give you a personalized experience.
+        Lets have a chat. What do you want to talk about?
       </p>
       <div className="mt-4 w-[500px]">
         <ChatInput
