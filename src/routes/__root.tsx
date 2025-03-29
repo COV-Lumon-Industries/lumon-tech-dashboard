@@ -1,6 +1,6 @@
-import AuthProvider from "@/context/auth-provider";
+import AuthProvider, { IAuthContext } from "@/context/auth-provider";
 import {
-  createRootRoute,
+  createRootRouteWithContext,
   HeadContent,
   Outlet,
   Scripts,
@@ -11,7 +11,9 @@ import appCss from "@/styles/app.css?url";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from '@/components/ui/sonner';
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  auth: IAuthContext;
+}>()({
   head: () => ({
     meta: [
       {
