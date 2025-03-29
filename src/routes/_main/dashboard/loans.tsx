@@ -16,7 +16,11 @@ export const Route = createFileRoute("/_main/dashboard/loans")({
 function RouteComponent() {
   return (
     <div className="w-full min-h-screen pb-8">
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mb-4">
+      <div className="w-full flex flex-row justify-between items-start mt-4">
+          <div className="text-[26px] font-bold">Loans</div>
+       
+        </div>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mb-4 mt-4">
         <Card className="min-h-64 rounded-lg bg-white shadow-none  lg:col-span-2 p-6">
           <CardHeader>
             <CardTitle className="text-xl font-semibold text-gray-800">
@@ -58,7 +62,7 @@ function RouteComponent() {
             </CardContent>
           </Card>
           <div className="grid grid-cols-2 gap-5 ">
-            <Button className="bg-black text-white hover:bg-gray-800">
+            <Button className="text-white hover:bg-gray-800">
               Switch Account
             </Button>
             <RequestLoanDialog />

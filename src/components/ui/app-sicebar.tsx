@@ -7,10 +7,13 @@ import {
   Command,
   Frame,
   GalleryVerticalEnd,
+  House,
   Map,
+  MessageSquareText,
   PieChart,
   Settings2,
   SquareTerminal,
+  Wallet,
 } from "lucide-react";
 import * as React from "react";
 
@@ -35,9 +38,9 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Lumon Industries",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: "",
     },
     {
       name: "Acme Corp.",
@@ -51,27 +54,25 @@ const data = {
     },
   ],
   navMain: [
+   
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: House,
+    },
+    {
+      title: "Loans",
+      url: "/dashboard/loans",
+      icon: Wallet,
+    },
+    {
+      title: "Chat",
+      url: "/dashboard/chat",
+      icon: MessageSquareText,  
       isActive: true,
     },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-    },
+ 
+
   ],
   projects: [
     {

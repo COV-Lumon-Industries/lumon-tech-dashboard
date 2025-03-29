@@ -99,7 +99,7 @@ function RouteComponent() {
   const [accounts] = useState<Account[]>(accountsData);
 
   return (
-    <div className="container mx-auto py-4">
+    <div className="container mx-auto ">
       <div className="w-full flex flex-col justify-start items-start">
         {/* Header */}
         <div className="w-full flex flex-row justify-between items-start mt-4">
@@ -153,13 +153,13 @@ function RouteComponent() {
                   <Legend />
                   <Bar
                     dataKey="income"
-                    fill="#1A1E4C"
+                    fill="#166434"
                     radius={4}
                     name="Income"
                   />
                   <Bar
                     dataKey="expenses"
-                    fill="#2463EB"
+                    fill="#5DD68B"
                     radius={4}
                     name="Expenses"
                   />
