@@ -1,13 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useForm } from "@tanstack/react-form";
-import { postRegisterUser } from "@/services";
-import { z } from "zod";
-import { AxiosError } from "axios";
-import { toast } from "sonner";
-import { useAuth } from "@/context/auth-provider";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useMutation } from '@tanstack/react-query';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { useForm } from '@tanstack/react-form';
+import { postRegisterUser } from '@/services';
+import { z } from 'zod';
+import { AxiosError } from 'axios';
+import { toast } from 'sonner';
+import { useAuth } from '@/context/auth-provider';
 
 export const Route = createFileRoute("/_auth/signup")({
   component: RouteComponent,
@@ -33,10 +33,22 @@ export const userSchema = z.object({
 
 function RouteComponent() {
   const { login } = useAuth();
+  const navigate = useNavigate();
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: postRegisterUser,
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      login({
+        token: data.data.token,
+        ...data.data.user,
+      });
+
+      navigate({
+        to: "/dashboard",
+      });
+      toast("Account created successfully");
+    },
     onError: (err) => {
       const error = err as AxiosError<{ data: string }>;
       console.error("Login error", error.response?.data.data);
