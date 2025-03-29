@@ -88,7 +88,8 @@ const {mutateAsync,isPending}= useMutation({
  mutationKey:["upload-file"],
  mutationFn: UploadDocument,
  onSuccess:(data)=>{
-    setUriId(`http://65.21.5.249:8081/files/download/${data?.uriId}`)
+    
+    setUriId(`http://65.21.5.249:8081/files/download/${data?.data?.url}`)
  }})
 
  function handleUpload(){

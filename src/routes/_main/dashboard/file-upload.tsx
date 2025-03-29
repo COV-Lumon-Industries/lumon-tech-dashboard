@@ -38,6 +38,7 @@ function MtnUploadPage() {
     },
   });
 
+  console.log("apple",uriId)
   function handleConnnectAccount() {
     if (uriId) {
       setOpen(true);
@@ -77,7 +78,9 @@ function MtnUploadPage() {
             <FileUpload03 setUriId={setUriId} />
           </div>
           <div className="flex justify-end gap-4 pt-4">
-            <Button isLoading={isPostingDocument || isPending} onClick={handleConnnectAccount}>
+            <Button isLoading={isPostingDocument || isPending} onClick={()=>{
+              mutate(uriId)
+            }}>
               Connect Account
             </Button>
           </div>

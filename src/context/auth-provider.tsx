@@ -39,7 +39,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = React.useCallback(async (data: user) => {
     if (typeof window !== "undefined") {
-      console.log(data, "data")
+      console.log(data, "data");
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
     setUser(data);
