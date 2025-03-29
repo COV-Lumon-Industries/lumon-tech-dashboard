@@ -1,41 +1,57 @@
-import { wait } from "@/utils";
 import React from "react";
 
 export interface user {
-  email: string;
   token: string;
+  id: string;
+  username: string;
+  password: string;
+  email: string;
+  user_role: string;
 }
 export interface IAuthContext {
   isAuthenticated: boolean;
+  user: user | null;
   login: (data: user) => Promise<void>;
   logout: () => Promise<void>;
-  user: user | null;
 }
 
 const AuthContext = React.createContext<IAuthContext | null>(null);
 
-const key = "syka.auth.user";
-
-
+const STORAGE_KEY = 'lumon_auth_user';
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = React.useState<user | null>(null);
+  const [user, setUser] = React.useState<user | null>(() => {
+    if (typeof window === "undefined") {
+      return null;
+    }
+    const storedUser = localStorage.getItem(STORAGE_KEY);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  
   const isAuthenticated = !!user;
 
-  const logout = React.useCallback(async () => {
-    await wait(250);
+  console.log(isAuthenticated)
 
+  const logout = React.useCallback(async () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(STORAGE_KEY);
+    }
     setUser(null);
   }, []);
 
   const login = React.useCallback(async (data: user) => {
-    await wait(500);
-
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
     setUser(data);
   }, []);
 
+  // Sync localStorage with state changes
   React.useEffect(() => {
-  }, []);
+    if (user && typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+    }
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
