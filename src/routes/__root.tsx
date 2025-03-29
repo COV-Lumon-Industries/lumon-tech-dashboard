@@ -7,9 +7,9 @@ export const Route = createRootRouteWithContext<{
   auth: IAuthContext;
 }>()({
   component: () => (
-    <>
+    <div className='font-manrope'>
       <Outlet />
       <TanStackRouterDevtools />
-    </>
+    </div>
   ),
 })

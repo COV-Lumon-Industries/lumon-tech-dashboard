@@ -98,7 +98,7 @@ function RouteComponent() {
   const [accounts] = useState<Account[]>(accountsData);
 
   return (
-    <div className="w-full px-6 py-8">
+    <div className="w-full ">
       {/* Header */}
       <div className="w-full flex flex-row justify-between items-start mb-6">
         <div className="text-2xl font-bold">Dashboard</div>
