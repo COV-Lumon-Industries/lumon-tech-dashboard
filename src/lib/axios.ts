@@ -1,3 +1,4 @@
+import { STORAGE_KEY } from "@/context/auth-provider";
 import axios from "axios";
 
 declare module "axios" {
@@ -42,7 +43,13 @@ http.interceptors.request.use(
     if (typeof window === 'undefined') {
       return config;
     }
-    const token = localStorage.getItem('token');
+    const data = localStorage.getItem(STORAGE_KEY);
+    if (!data) {
+      return config;
+    }
+
+    const { token } = JSON.parse(data);
+
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
