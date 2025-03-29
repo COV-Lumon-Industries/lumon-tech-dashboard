@@ -2,7 +2,7 @@ import { DataTable } from "@/components/shared/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { columns } from "@/features/home/columns";
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from "@tanstack/react-router";
 import { DollarSign } from "lucide-react";
 import { useState } from "react";
 import {
@@ -16,9 +16,9 @@ import {
   YAxis,
 } from "recharts";
 
-export const Route = createFileRoute('/_main/dashboard/')({
+export const Route = createFileRoute("/_main/dashboard/")({
   component: RouteComponent,
-})
+});
 
 interface Account {
   id: string;
@@ -102,10 +102,7 @@ function RouteComponent() {
       {/* Balance Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mb-8">
         {["My Balance", "Monthly Income", "Monthly Expenses"].map((title) => (
-          <Card
-            key={title}
-            className="w-full cursor-pointer h-auto"
-          >
+          <Card key={title} className="w-full cursor-pointer h-auto">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{title}</CardTitle>
               <DollarSign className="w-4 h-4 text-muted-foreground" />
@@ -136,19 +133,10 @@ function RouteComponent() {
                   stroke="#e0e0e0"
                 />
                 <XAxis dataKey="month" tickLine={false} tickMargin={10} />
-                <YAxis
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                />
+                <YAxis tickLine={false} tickMargin={10} axisLine={false} />
                 <Tooltip />
                 <Legend />
-                <Bar
-                  dataKey="income"
-                  fill="#1A1E4C"
-                  radius={4}
-                  name="Income"
-                />
+                <Bar dataKey="income" fill="#1A1E4C" radius={4} name="Income" />
                 <Bar
                   dataKey="expenses"
                   fill="#2463EB"
@@ -202,19 +190,17 @@ function RouteComponent() {
       </div>
 
       {/* Transactions Section */}
-    <DataTable 
-    columns={columns}
-    title="Recent Transactions"
-    data={[]}
-    isLoading={false}
-    inputPlaceholder="Search transactions Id"
-    inputKey="transaction" //inputKey is use for filtering it add a search bar. It must align with the types
-    onClickCell={(d)=>{
-      console.log("apple",d)
-    }} //can use this to navigate to a different page and perform and actions. 
-    
-    />
-    
+      <DataTable
+        columns={columns}
+        title="Recent Transactions"
+        data={[]}
+        isLoading={false}
+        inputPlaceholder="Search transactions Id"
+        inputKey="transaction" //inputKey is use for filtering it add a search bar. It must align with the types
+        onClickCell={(d) => {
+          console.log("apple", d);
+        }} //can use this to navigate to a different page and perform and actions.
+      />
     </div>
   );
 }
