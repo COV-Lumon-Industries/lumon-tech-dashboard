@@ -8,6 +8,8 @@ import { z } from 'zod';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { useAuth } from '@/context/auth-provider';
+import { PhoneInput } from '@/components/ui/phone-input';
+import { cn } from '@/lib';
 
 export const Route = createFileRoute("/_auth/signup")({
   component: RouteComponent,
@@ -24,6 +26,10 @@ export const userSchema = z.object({
     ),
 
   email: z.string().email("Invalid email format"),
+
+  phone_number: z
+    .string()
+    .min(9, "Invalid phone number"),
 
   password: z
     .string()
@@ -64,6 +70,7 @@ function RouteComponent() {
       username: "",
       email: "",
       password: "",
+      phone_number: "",
     },
     onSubmit: async ({ value }) => {
       mutate(value);
@@ -128,6 +135,37 @@ function RouteComponent() {
                       fieldInfo={field}
                     />
                   </>
+                );
+              }}
+            />
+            <Field
+              name="phone_number"
+              children={(field) => {
+                return (
+                  <div className='w-full flex flex-col gap-2'>
+                    <label
+                      htmlFor={field.name}
+                      className={cn(
+                        "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+                      )}
+                    >
+                      Phone Number
+                    </label>
+                    <PhoneInput
+                      id={field.name}
+                      placeholder="Phone Number"
+                      defaultCountry='GH'
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e)}
+                    />
+                    {field?.state.meta.isTouched && field.state.meta.errors.length ? (
+                      <em className="text-xs text-red-700">
+                        {field.state.meta.errors.map((error) => error?.message).join(", ")}
+                      </em>
+                    ) : null}
+                  </div>
                 );
               }}
             />
