@@ -24,7 +24,7 @@ function MtnUploadPage() {
 
   const handleUpload = async () => {
     setIsUploading(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsUploading(false);
   };
 
@@ -39,7 +39,6 @@ function MtnUploadPage() {
         </Link>
         <h1 className="text-2xl font-bold mt-4">Connect Account</h1>
       </div>
-
 
       <div className="space-y-6">
         <div className="p-4 border rounded-lg bg-gray-50 flex items-center gap-3">
@@ -57,7 +56,7 @@ function MtnUploadPage() {
           <p className="text-sm text-gray-500">
             Please upload your MTN statement to connect your account
           </p>
-          
+
           <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center">
             <Upload className="h-10 w-10 text-gray-400 mb-2" />
             <p className="text-sm text-gray-500 text-center mb-2">
@@ -76,7 +75,7 @@ function MtnUploadPage() {
               </Button>
             </Label>
           </div>
-          
+
           {selectedFile && (
             <div className="flex items-center text-sm p-2 bg-gray-50 rounded">
               <FileText className="h-4 w-4 mr-2 text-gray-500" />
@@ -86,11 +85,7 @@ function MtnUploadPage() {
         </div>
 
         <div className="flex justify-end gap-4 pt-4">
-          <Button
-            variant="outline"
-          >
-            Cancel
-          </Button>
+          <Button variant="outline">Cancel</Button>
           <Button
             onClick={handleUpload}
             disabled={!selectedFile || isUploading}

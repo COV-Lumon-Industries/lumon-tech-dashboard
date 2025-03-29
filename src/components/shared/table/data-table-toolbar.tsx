@@ -1,17 +1,14 @@
-import { Table } from '@tanstack/react-table';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import { Table } from "@tanstack/react-table";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
-import { TableFacetProps } from '@/types';
+import { TableFacetProps } from "@/types";
 
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-
-import { DataTableFacetedFilter } from './data-table-facet-filter';
-import { DataTableViewOptions } from './data-table-view-options';
-import { ArrowLeftCircleIcon } from 'lucide-react';
-
-
+import { DataTableFacetedFilter } from "./data-table-facet-filter";
+import { DataTableViewOptions } from "./data-table-view-options";
+import { ArrowLeftCircleIcon } from "lucide-react";
 
 interface DataTableToolbarProps<TData> {
   title?: string;
@@ -29,7 +26,7 @@ export function DataTableToolbar<TData>({
   inputKey,
   facetOptions,
   showColumnControl,
-  inputPlaceholder = 'Filter anything...',
+  inputPlaceholder = "Filter anything...",
   handleRefreshTable,
 }: Readonly<DataTableToolbarProps<TData>>) {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -37,7 +34,7 @@ export function DataTableToolbar<TData>({
   return (
     <div className="h-auto px-2 flex flex-col gap-y-4">
       <div className="flex items-center justify-between gap-x-2">
-        {title && <h2 className='text-2xl font-semibold'>{title}</h2>}
+        {title && <h2 className="text-2xl font-semibold">{title}</h2>}
 
         <div className="flex items-center gap-3">
           {showColumnControl && <DataTableViewOptions table={table} />}
@@ -53,10 +50,10 @@ export function DataTableToolbar<TData>({
       <div className="flex gap-x-2 items-center justify-between">
         {inputKey && (
           <Input
-        className='w-full sm:max-w-xs lg:w-[250px]'
+            className="w-full sm:max-w-xs lg:w-[250px]"
             placeholder={inputPlaceholder}
             value={
-              (table.getColumn(inputKey)?.getFilterValue() as string) ?? ''
+              (table.getColumn(inputKey)?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
               table.getColumn(inputKey)?.setFilterValue(event.target.value)
@@ -75,7 +72,7 @@ export function DataTableToolbar<TData>({
                   title={option.label}
                   options={option.options}
                 />
-              )
+              ),
           )}
 
           {isFiltered && (

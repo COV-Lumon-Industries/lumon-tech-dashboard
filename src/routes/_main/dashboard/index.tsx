@@ -24,7 +24,6 @@ import {
 
 import { Link } from "@tanstack/react-router";
 
-
 export const Route = createFileRoute("/_main/dashboard/")({
   component: RouteComponent,
 });
@@ -58,7 +57,7 @@ const revenueData = [
   { month: "Dec", income: 11000, expenses: 6000 },
 ];
 
-const transactions =[
+const transactions = [
   {
     id: 1,
     description: "Salary Payment",
@@ -97,7 +96,6 @@ const transactions =[
   },
 ];
 function RouteComponent() {
-
   const [accounts] = useState<Account[]>(accountsData);
 
   return (
@@ -107,9 +105,9 @@ function RouteComponent() {
         <div className="w-full flex flex-row justify-between items-start mt-4">
           <div className="text-[26px] font-bold">Dashboard</div>
           <Link to="/dashboard/add-account">
-        <Button>Add Account</Button>
-        </Link>
-                </div>
+            <Button>Add Account</Button>
+          </Link>
+        </div>
 
         {/* Balance Cards */}
         <div className="flex flex-col md:flex-row gap-4 w-full mt-6">
@@ -130,15 +128,15 @@ function RouteComponent() {
         </div>
 
         {/* Accounts & Chart Section */}
-        <div className="mt-12 w-full flex md:flex-row flex-col gap-6"> 
-        {/* Accounts - Left */}
+        <div className="mt-12 w-full flex md:flex-row flex-col gap-6">
+          {/* Accounts - Left */}
 
           {/* Bar Chart - Right */}
           <Card className="md:w-[70%] w-full md:h-auto h-[370px] md:block hidden">
             <CardHeader>
               <CardTitle>Monthly Income & Expenses</CardTitle>
             </CardHeader>
-            <CardContent className="p-4 h-[300px]"> 
+            <CardContent className="p-4 h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={revenueData}
@@ -150,11 +148,7 @@ function RouteComponent() {
                     stroke="#e0e0e0"
                   />
                   <XAxis dataKey="month" tickLine={false} tickMargin={10} />
-                  <YAxis
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={false} 
-                  />
+                  <YAxis tickLine={false} tickMargin={10} axisLine={false} />
                   <Tooltip />
                   <Legend />
                   <Bar
@@ -214,12 +208,12 @@ function RouteComponent() {
           </Card>
         </div>
 
-         <div className="w-full md:mt-6 mt-8">
+        <div className="w-full md:mt-6 mt-8">
           <div className="w-full flex flex-row justify-between ">
             <div className="text-[23px] font-bold">Recent Transactions</div>
             <div className="underline cursor-pointer">view more</div>
           </div>
-         </div>
+        </div>
         {/* Transactions Table */}
         <div className="mt-4 w-full border rounded-[10px] overflow-x-auto">
           <Table>

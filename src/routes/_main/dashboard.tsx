@@ -16,8 +16,6 @@ function RouteComponent() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset className="flex flex-col h-screen overflow-auto">
-            
-           
         <div className=" px-6 py-8">
           <Outlet />
         </div>

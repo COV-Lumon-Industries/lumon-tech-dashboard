@@ -6,17 +6,12 @@
   "_card-DDNd0Tpl.js": {
     "file": "assets/card-DDNd0Tpl.js",
     "name": "card",
-    "imports": [
-      "_input-BnCMX1ET.js",
-      "_dropdown-menu-CT42GEhg.js"
-    ]
+    "imports": ["_input-BnCMX1ET.js", "_dropdown-menu-CT42GEhg.js"]
   },
   "_dropdown-menu-CT42GEhg.js": {
     "file": "assets/dropdown-menu-CT42GEhg.js",
     "name": "dropdown-menu",
-    "imports": [
-      "_input-BnCMX1ET.js"
-    ]
+    "imports": ["_input-BnCMX1ET.js"]
   },
   "_index-Dp7-MY6g.js": {
     "file": "assets/index-Dp7-MY6g.js",
@@ -39,9 +34,7 @@
       "src/routes/_main/dashboard/index.tsx?tsr-split=component",
       "src/routes/_main/dashboard/loans.tsx?tsr-split=component"
     ],
-    "assets": [
-      "assets/app-BzPYWJrc.css"
-    ]
+    "assets": ["assets/app-BzPYWJrc.css"]
   },
   "src/assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM.webp": {
     "file": "assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM-DZYhncqj.webp",
@@ -58,22 +51,14 @@
     "name": "login",
     "src": "src/routes/_auth/login.tsx?tsr-split=component",
     "isDynamicEntry": true,
-    "imports": [
-      "_input-BnCMX1ET.js",
-      "_index-Dp7-MY6g.js",
-      "_ssr-y1P2B_7Y.js"
-    ]
+    "imports": ["_input-BnCMX1ET.js", "_index-Dp7-MY6g.js", "_ssr-y1P2B_7Y.js"]
   },
   "src/routes/_auth/signup.tsx?tsr-split=component": {
     "file": "assets/signup-k2adHtpd.js",
     "name": "signup",
     "src": "src/routes/_auth/signup.tsx?tsr-split=component",
     "isDynamicEntry": true,
-    "imports": [
-      "_input-BnCMX1ET.js",
-      "_index-Dp7-MY6g.js",
-      "_ssr-y1P2B_7Y.js"
-    ]
+    "imports": ["_input-BnCMX1ET.js", "_index-Dp7-MY6g.js", "_ssr-y1P2B_7Y.js"]
   },
   "src/routes/_main.tsx?tsr-split=component": {
     "file": "assets/_main-Bpym5h4K.js",
@@ -86,13 +71,8 @@
     "name": "dashboard",
     "src": "src/routes/_main/dashboard.tsx?tsr-split=component",
     "isDynamicEntry": true,
-    "imports": [
-      "_input-BnCMX1ET.js",
-      "_dropdown-menu-CT42GEhg.js"
-    ],
-    "assets": [
-      "assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM-DZYhncqj.webp"
-    ]
+    "imports": ["_input-BnCMX1ET.js", "_dropdown-menu-CT42GEhg.js"],
+    "assets": ["assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM-DZYhncqj.webp"]
   },
   "src/routes/_main/dashboard/index.tsx?tsr-split=component": {
     "file": "assets/index-D9p1aCTt.js",
@@ -127,8 +107,6 @@
     "name": "ssr",
     "src": "virtual:$vinxi/handler/ssr",
     "isEntry": true,
-    "imports": [
-      "_ssr-y1P2B_7Y.js"
-    ]
+    "imports": ["_ssr-y1P2B_7Y.js"]
   }
 }

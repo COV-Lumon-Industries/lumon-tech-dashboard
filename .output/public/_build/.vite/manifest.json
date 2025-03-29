@@ -16,17 +16,12 @@
       "src/routes/_main/dashboard/index.tsx?tsr-split=component",
       "src/routes/_main/dashboard/loans.tsx?tsr-split=component"
     ],
-    "assets": [
-      "assets/app-BzPYWJrc.css"
-    ]
+    "assets": ["assets/app-BzPYWJrc.css"]
   },
   "_dropdown-menu-DJQEXZ3J.js": {
     "file": "assets/dropdown-menu-DJQEXZ3J.js",
     "name": "dropdown-menu",
-    "imports": [
-      "_client-B6Fwjkna.js",
-      "_input-CHU7cpM5.js"
-    ]
+    "imports": ["_client-B6Fwjkna.js", "_input-CHU7cpM5.js"]
   },
   "_generateCategoricalChart-cXdD9WE3.js": {
     "file": "assets/generateCategoricalChart-cXdD9WE3.js",
@@ -40,23 +35,17 @@
   "_index-B1QYg5Sc.js": {
     "file": "assets/index-B1QYg5Sc.js",
     "name": "index",
-    "imports": [
-      "_client-B6Fwjkna.js"
-    ]
+    "imports": ["_client-B6Fwjkna.js"]
   },
   "_input-CHU7cpM5.js": {
     "file": "assets/input-CHU7cpM5.js",
     "name": "input",
-    "imports": [
-      "_client-B6Fwjkna.js"
-    ]
+    "imports": ["_client-B6Fwjkna.js"]
   },
   "_x-CsqFnHNT.js": {
     "file": "assets/x-CsqFnHNT.js",
     "name": "x",
-    "imports": [
-      "_input-CHU7cpM5.js"
-    ]
+    "imports": ["_input-CHU7cpM5.js"]
   },
   "src/assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM.webp": {
     "file": "assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM-DZYhncqj.webp",
@@ -67,9 +56,7 @@
     "name": "_auth",
     "src": "src/routes/_auth.tsx?tsr-split=component",
     "isDynamicEntry": true,
-    "imports": [
-      "_client-B6Fwjkna.js"
-    ]
+    "imports": ["_client-B6Fwjkna.js"]
   },
   "src/routes/_auth/login.tsx?tsr-split=component": {
     "file": "assets/login-MamCEnAE.js",
@@ -98,9 +85,7 @@
     "name": "_main",
     "src": "src/routes/_main.tsx?tsr-split=component",
     "isDynamicEntry": true,
-    "imports": [
-      "_client-B6Fwjkna.js"
-    ]
+    "imports": ["_client-B6Fwjkna.js"]
   },
   "src/routes/_main/dashboard.tsx?tsr-split=component": {
     "file": "assets/dashboard-MGHvxcA4.js",
@@ -113,9 +98,7 @@
       "_dropdown-menu-DJQEXZ3J.js",
       "_x-CsqFnHNT.js"
     ],
-    "assets": [
-      "assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM-DZYhncqj.webp"
-    ]
+    "assets": ["assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM-DZYhncqj.webp"]
   },
   "src/routes/_main/dashboard/index.tsx?tsr-split=component": {
     "file": "assets/index-K460dCOQ.js",
@@ -147,17 +130,13 @@
     "name": "index",
     "src": "src/routes/_main/index.tsx?tsr-split=component",
     "isDynamicEntry": true,
-    "imports": [
-      "_client-B6Fwjkna.js"
-    ]
+    "imports": ["_client-B6Fwjkna.js"]
   },
   "virtual:$vinxi/handler/client": {
     "file": "assets/client-ub1Wy6z7.js",
     "name": "client",
     "src": "virtual:$vinxi/handler/client",
     "isEntry": true,
-    "imports": [
-      "_client-B6Fwjkna.js"
-    ]
+    "imports": ["_client-B6Fwjkna.js"]
   }
 }

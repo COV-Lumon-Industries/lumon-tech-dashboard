@@ -1,5 +1,5 @@
-import { jsx, Fragment } from 'react/jsx-runtime';
-import { Outlet } from '@tanstack/react-router';
+import { jsx, Fragment } from "react/jsx-runtime";
+import { Outlet } from "@tanstack/react-router";
 
 const e = () => jsx(Fragment, { children: jsx(Outlet, {}) });
 
