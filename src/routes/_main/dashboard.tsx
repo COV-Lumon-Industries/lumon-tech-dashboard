@@ -114,7 +114,7 @@ function RouteComponent() {
         {/* Header */}
         <div className="w-full flex md:flex-row flex-col justify-between items-center mt-4">
           <div className="text-[26px] font-bold">Dashboard</div>
-          <Button variant="outline">Add Account</Button>
+          <Button >Add Account</Button>
         </div>
 
         {/* Balance Cards */}
