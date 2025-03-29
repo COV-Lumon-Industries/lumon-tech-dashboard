@@ -1,5 +1,4 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-
 import { AppSidebar } from "@/components/ui/app-sicebar";
 import {
   Breadcrumb,
@@ -44,8 +43,10 @@ function RouteComponent() {
             </Breadcrumb>
           </div>
         </header>
-        <div className=" px-6 py-8">
-          <Outlet />
+        <div className="flex-1 overflow-y-auto">
+          <div className="px-6 py-8">
+            <Outlet />
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
