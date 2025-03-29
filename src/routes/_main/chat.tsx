@@ -1,4 +1,5 @@
 import { genAIResponse } from "@/lib/ai";
+import "@/styles/chat.index.css";
 import { useChat } from "@ai-sdk/react";
 import { createFileRoute } from "@tanstack/react-router";
 import type { UIMessage } from "ai";
