@@ -16,7 +16,7 @@ export const Route = createFileRoute("/_main")({
 
 function MainLayout() {
   return (
-    <main className="flex flex-row w-screen h-screen overflow-clip bg-syka-gray100 scrollbar-none">
+    <main className="flex flex-row w-screen h-screen overflow-clip scrollbar-none">
       <Outlet />
     </main>
   );
