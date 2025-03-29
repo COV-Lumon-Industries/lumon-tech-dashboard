@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { columns } from '@/features/loans/columns'
 import CreditScoreCard from '@/features/loans/credit-score'
+import { RequestLoanDialog } from '@/features/loans/request-loan'
 import { createFileRoute } from '@tanstack/react-router'
 import { CreditCardIcon } from 'lucide-react'
 
@@ -34,7 +35,7 @@ function RouteComponent() {
       </CardContent>
     </Card>
         <div className="flex flex-col gap-2  ">
-  <Card className="bg-green-800 min-h-64 flex flex-col justify-between p-5 text-white h-48">
+  <Card className="bg-green-gray-gradient min-h-64 flex flex-col justify-between p-5 text-white h-48">
     <CardTitle className="w-full max-h-fit flex flex-row justify-between">
       <div>
         <Label className="text-sm text-neutral-300">Account Balance</Label>
@@ -51,9 +52,7 @@ function RouteComponent() {
     <Button className="bg-black text-white hover:bg-gray-800">
       Switch Account
     </Button>
-    <Button variant="outline" className="bg-white">
-      Request Loan
-    </Button>
+ <RequestLoanDialog/>
   </div>
 </div>
 

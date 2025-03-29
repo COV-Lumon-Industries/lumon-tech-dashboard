@@ -1,3 +1,4 @@
+import { DataTable } from "@/components/shared/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -8,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { columns } from "@/features/home/columns";
 import { createFileRoute } from '@tanstack/react-router';
 import { DollarSign } from "lucide-react";
 import { useState } from "react";
@@ -208,47 +210,19 @@ function RouteComponent() {
       </div>
 
       {/* Transactions Section */}
-      <div className="w-full">
-        <div className="w-full flex flex-row justify-between items-center mb-4">
-          <div className="text-xl font-bold">Recent Transactions</div>
-          <div className="underline cursor-pointer">view more</div>
-        </div>
-        
-        {/* Transactions Table */}
-        <div className="w-full border rounded-lg overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Transaction</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {transactions.map((transaction) => (
-                <TableRow key={transaction.id}>
-                  <TableCell>{transaction.description}</TableCell>
-                  <TableCell>{transaction.date}</TableCell>
-                  <TableCell
-                    className={
-                      transaction.type === "income"
-                        ? "text-green-700"
-                        : "text-red-500"
-                    }
-                  >
-                    {transaction.type === "income" ? "+" : "-"}$
-                    {transaction.amount.toFixed(2)}
-                  </TableCell>
-                  <TableCell>{transaction.category}</TableCell>
-                  <TableCell>{transaction.status}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
+    <DataTable 
+    columns={columns}
+    title="Recent Transactions"
+    data={[]}
+    isLoading={false}
+    inputPlaceholder="Search transactions Id"
+    inputKey="transaction" //inputKey is use for filtering it add a search bar. It must align with the types
+    onClickCell={(d)=>{
+      console.log("apple",d)
+    }} //can use this to navigate to a different page and perform and actions. 
+    
+    />
+    
     </div>
   );
 }

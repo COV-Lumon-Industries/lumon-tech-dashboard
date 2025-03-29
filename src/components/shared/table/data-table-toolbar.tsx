@@ -53,7 +53,7 @@ export function DataTableToolbar<TData>({
       <div className="flex gap-x-2 items-center justify-between">
         {inputKey && (
           <Input
-            type="search"
+        className='w-full sm:max-w-xs lg:w-[250px]'
             placeholder={inputPlaceholder}
             value={
               (table.getColumn(inputKey)?.getFilterValue() as string) ?? ''
