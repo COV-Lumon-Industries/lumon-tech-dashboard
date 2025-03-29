@@ -8,6 +8,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
+import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -60,12 +61,12 @@ function Messages({ messages }: { messages: Array<UIMessage> }) {
   }, [messages]);
 
   return (
-    <ScrollArea className="h-[calc(100vh-180px)] w-full">
+    <ScrollArea className="h-[calc(100vh-140px)] w-full">
       <div className="pr-4 whitespace-normal">
-        {messages.map(({ id, role, content }, index) => (
+        {messages.map(({ id, role, content }) => (
           <div key={id}>
             <div className="py-5">
-              <div className="flex items-start gap-4 w-full">
+              <div className="flex items-start gap-12 w-full">
                 {role === "assistant" ? (
                   <Avatar className="h-8 w-8 flex-shrink-0">
                     <AvatarImage
@@ -84,14 +85,22 @@ function Messages({ messages }: { messages: Array<UIMessage> }) {
                   </Avatar>
                 )}
                 <div className="flex-1 overflow-hidden">
-                  <div className="prose dark:prose-invert max-w-none text-foreground break-words overflow-wrap-anywhere">
+                  <div className="prose dark:prose-invert max-w-none text-foreground break-words overflow-wrap-anywhere [&>*]:mb-6 [&>*:last-child]:mb-0">
                     <ReactMarkdown
+                      remarkPlugins={[
+                        remarkGfm,
+                        [remarkBreaks, { breaks: true }],
+                      ]}
                       rehypePlugins={[
                         rehypeRaw,
                         rehypeSanitize,
                         rehypeHighlight,
-                        remarkGfm,
                       ]}
+                      components={{
+                        p: ({ children }) => (
+                          <p className="whitespace-pre-line">{children}</p>
+                        ),
+                      }}
                     >
                       {content}
                     </ReactMarkdown>
