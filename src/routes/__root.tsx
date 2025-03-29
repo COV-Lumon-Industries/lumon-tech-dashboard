@@ -1,6 +1,7 @@
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { IAuthContext } from "../context/auth-provider";
+import { Toaster } from '@/components/ui/sonner';
 
 
 export const Route = createRootRouteWithContext<{
@@ -10,6 +11,7 @@ export const Route = createRootRouteWithContext<{
     <>
       <Outlet />
       <TanStackRouterDevtools />
+      <Toaster position='top-right' />
     </>
   ),
 })
