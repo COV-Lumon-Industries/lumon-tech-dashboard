@@ -1,5 +1,4 @@
 import { genAIResponse } from "@/lib/ai";
-import "@/styles/chat.index.css";
 import { useChat } from "@ai-sdk/react";
 import { createFileRoute } from "@tanstack/react-router";
 import type { UIMessage } from "ai";
@@ -11,29 +10,44 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+
 export const Route = createFileRoute("/_main/chat")({
   component: RouteComponent,
 });
 
-function InitalLayout({ children }: { children: React.ReactNode }) {
+function EmptyState({
+  input,
+  handleInputChange,
+  handleSubmit,
+}: {
+  input: string;
+  handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  handleSubmit: React.FormEventHandler<HTMLFormElement>;
+}) {
   return (
-    <div className="flex-1 flex items-center justify-center px-4">
-      <div className="text-center max-w-3xl mx-auto w-full">
-        <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-orange-500 to-red-600 text-transparent bg-clip-text uppercase">
-          <span className="text-white">TanStack</span> Chat
-        </h1>
-        <p className="text-gray-400 mb-6 w-2/3 mx-auto text-lg">
-          You can ask me about anything, I might or might not have a good
-          answer, but you can still ask.
-        </p>
-        {children}
+    <div className="flex flex-col items-center justify-center min-h-[500px]">
+      <CardTitle className="text-4xl font-bold mb-4 text-foreground">
+        TanStack Chat
+      </CardTitle>
+      <p className="text-foreground text-center max-w-sm font-medium mb-8">
+        You can ask me about anything, I might or might not have a good answer,
+        but you can still ask.
+      </p>
+      <div className="w-full mt-4">
+        <ChatInput
+          input={input}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+        />
       </div>
     </div>
   );
-}
-
-function ChattingLayout({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>;
 }
 
 function Messages({ messages }: { messages: Array<UIMessage> }) {
@@ -46,51 +60,92 @@ function Messages({ messages }: { messages: Array<UIMessage> }) {
     }
   }, [messages]);
 
-  if (!messages.length) {
-    return null;
-  }
-
   return (
-    <div ref={messagesContainerRef} className="flex-1 overflow-y-auto pb-24">
-      <div className="max-w-3xl mx-auto w-full px-4">
-        {messages.map(({ id, role, content }) => (
-          <div
-            key={id}
-            className={`py-6 ${
-              role === "assistant"
-                ? "bg-gradient-to-r from-orange-500/5 to-red-600/5"
-                : "bg-transparent"
-            }`}
-          >
-            <div className="flex items-start gap-4 max-w-3xl mx-auto w-full">
-              {role === "assistant" ? (
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-orange-500 to-red-600 mt-2 flex items-center justify-center text-sm font-medium text-white flex-shrink-0">
-                  AI
-                </div>
-              ) : (
-                <div className="w-8 h-8 rounded-lg bg-gray-700 flex items-center justify-center text-sm font-medium text-white flex-shrink-0">
-                  Y
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="prose dark:prose-invert max-w-none">
-                  <ReactMarkdown
-                    rehypePlugins={[
-                      rehypeRaw,
-                      rehypeSanitize,
-                      rehypeHighlight,
-                      remarkGfm,
-                    ]}
-                  >
-                    {content}
-                  </ReactMarkdown>
+    <>
+      <CardHeader className="text-center p-4 border-b">
+        <CardTitle className="text-xl font-bold text-foreground">
+          TanStack Chat
+        </CardTitle>
+      </CardHeader>
+      <ScrollArea className="h-[500px]" ref={messagesContainerRef}>
+        {messages.map(({ id, role, content }, index) => (
+          <div key={id}>
+            <div className="py-4 px-4">
+              <div className="flex items-start gap-4 w-full">
+                {role === "assistant" ? (
+                  <Avatar className="h-8 w-8 flex-shrink-0">
+                    <AvatarFallback className="bg-primary text-primary-foreground">
+                      AI
+                    </AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <Avatar className="h-8 w-8 flex-shrink-0">
+                    <AvatarFallback className="bg-secondary text-secondary-foreground">
+                      You
+                    </AvatarFallback>
+                  </Avatar>
+                )}
+                <div className="flex-1">
+                  <div className="prose dark:prose-invert max-w-none text-foreground">
+                    <ReactMarkdown
+                      rehypePlugins={[
+                        rehypeRaw,
+                        rehypeSanitize,
+                        rehypeHighlight,
+                        remarkGfm,
+                      ]}
+                    >
+                      {content}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               </div>
             </div>
+            {index < messages.length - 1 && <Separator className="mx-4" />}
           </div>
         ))}
+      </ScrollArea>
+    </>
+  );
+}
+
+function ChatInput({
+  input,
+  handleInputChange,
+  handleSubmit,
+}: {
+  input: string;
+  handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  handleSubmit: React.FormEventHandler<HTMLFormElement>;
+}) {
+  return (
+    <form onSubmit={handleSubmit} className="w-full">
+      <div className="relative">
+        <Textarea
+          value={input}
+          onChange={handleInputChange}
+          placeholder="Type something clever (or don't, we won't judge)..."
+          className="min-h-[60px] w-full resize-none pr-12 border-input text-foreground placeholder:text-muted-foreground rounded-md"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              if (input.trim()) {
+                handleSubmit(e as any);
+              }
+            }
+          }}
+        />
+        <Button
+          type="submit"
+          size="icon"
+          disabled={!input.trim()}
+          className="absolute right-2 bottom-2 h-8 w-8 bg-primary hover:bg-primary/90 disabled:opacity-50 text-primary-foreground"
+        >
+          <Send className="w-4 h-4" />
+          <span className="sr-only">Send message</span>
+        </Button>
       </div>
-    </div>
+    </form>
   );
 }
 
@@ -107,47 +162,26 @@ function RouteComponent() {
     },
   });
 
-  const Layout = messages.length ? ChattingLayout : InitalLayout;
-
   return (
-    <div className="relative flex h-[calc(100vh-32px)] bg-gray-900">
-      <div className="flex-1 flex flex-col">
-        <Messages messages={messages} />
-
-        <Layout>
-          <form onSubmit={handleSubmit}>
-            <div className="relative max-w-xl mx-auto">
-              <textarea
-                value={input}
-                onChange={handleInputChange}
-                placeholder="Type something clever (or don't, we won't judge)..."
-                className="w-full rounded-lg border border-orange-500/20 bg-gray-800/50 pl-4 pr-12 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-transparent resize-none overflow-hidden shadow-lg"
-                rows={1}
-                style={{ minHeight: "44px", maxHeight: "200px" }}
-                onInput={(e) => {
-                  const target = e.target as HTMLTextAreaElement;
-                  target.style.height = "auto";
-                  target.style.height =
-                    Math.min(target.scrollHeight, 200) + "px";
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSubmit(e);
-                  }
-                }}
-              />
-              <button
-                type="submit"
-                disabled={!input.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-orange-500 hover:text-orange-400 disabled:text-gray-500 transition-colors focus:outline-none"
-              >
-                <Send className="w-4 h-4" />
-              </button>
-            </div>
-          </form>
-        </Layout>
-      </div>
+    <div className="flex flex-col items-center justify-center min-h-screen w-full py-8 bg-background">
+      {!messages.length ? (
+        <EmptyState
+          input={input}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+        />
+      ) : (
+        <Card className="w-full max-w-[600px] mx-auto border-border shadow-lg">
+          <Messages messages={messages} />
+          <CardFooter className="p-4 border-t border-border">
+            <ChatInput
+              input={input}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+            />
+          </CardFooter>
+        </Card>
+      )}
     </div>
   );
 }
