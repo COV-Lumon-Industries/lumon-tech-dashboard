@@ -21,6 +21,8 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { Link } from '@tanstack/react-router'
+
 
 export const Route = createFileRoute("/_main/dashboard")({
   component: RouteComponent,
@@ -103,7 +105,10 @@ function RouteComponent() {
         {/* Header */}
         <div className="w-full flex flex-row justify-between items-start mt-4">
           <div className="text-[26px] font-bold">Dashboard</div>
-          <Button>Add Account</Button>
+          <Link to="/AddAccount">
+          <Button
+        >Add Account</Button>
+          </Link>
         </div>
 
         {/* Balance Cards */}
