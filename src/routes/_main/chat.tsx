@@ -60,46 +60,48 @@ function Messages({ messages }: { messages: Array<UIMessage> }) {
   }, [messages]);
 
   return (
-    <ScrollArea ref={messagesContainerRef}>
-      {messages.map(({ id, role, content }, index) => (
-        <div key={id}>
-          <div className="py-5">
-            <div className="flex items-start gap-4 w-full">
-              {role === "assistant" ? (
-                <Avatar className="h-8 w-8 flex-shrink-0">
-                  <AvatarImage
-                    src="../../../public/lumon.png"
-                    alt="AI Assistant"
-                  />
-                  <AvatarFallback className="bg-primary text-primary-foreground">
-                    AI
-                  </AvatarFallback>
-                </Avatar>
-              ) : (
-                <Avatar className="h-8 w-8 flex-shrink-0">
-                  <AvatarFallback className="bg-secondary text-secondary-foreground">
-                    E
-                  </AvatarFallback>
-                </Avatar>
-              )}
-              <div className="flex-1">
-                <div className="prose dark:prose-invert max-w-none text-foreground">
-                  <ReactMarkdown
-                    rehypePlugins={[
-                      rehypeRaw,
-                      rehypeSanitize,
-                      rehypeHighlight,
-                      remarkGfm,
-                    ]}
-                  >
-                    {content}
-                  </ReactMarkdown>
+    <ScrollArea className="h-[calc(100vh-180px)] w-full">
+      <div className="pr-4 whitespace-normal">
+        {messages.map(({ id, role, content }, index) => (
+          <div key={id}>
+            <div className="py-5">
+              <div className="flex items-start gap-4 w-full">
+                {role === "assistant" ? (
+                  <Avatar className="h-8 w-8 flex-shrink-0">
+                    <AvatarImage
+                      src="../../../public/lumon.png"
+                      alt="AI Assistant"
+                    />
+                    <AvatarFallback className="bg-primary text-primary-foreground">
+                      AI
+                    </AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <Avatar className="h-8 w-8 flex-shrink-0">
+                    <AvatarFallback className="bg-secondary text-secondary-foreground">
+                      E
+                    </AvatarFallback>
+                  </Avatar>
+                )}
+                <div className="flex-1 overflow-hidden">
+                  <div className="prose dark:prose-invert max-w-none text-foreground break-words overflow-wrap-anywhere">
+                    <ReactMarkdown
+                      rehypePlugins={[
+                        rehypeRaw,
+                        rehypeSanitize,
+                        rehypeHighlight,
+                        remarkGfm,
+                      ]}
+                    >
+                      {content}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </ScrollArea>
   );
 }
@@ -168,7 +170,7 @@ function RouteComponent() {
           />
         </div>
       ) : (
-        <div className="w-full max-w-[800px] mx-auto flex flex-col items-center justify-between min-h-screen p-10">
+        <div className="w-full max-w-[800px] mx-auto flex flex-col gap-4 p-10">
           <Messages messages={messages} />
           <ChatInput
             input={input}
