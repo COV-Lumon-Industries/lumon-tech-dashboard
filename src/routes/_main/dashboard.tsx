@@ -10,7 +10,17 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { DollarSign,Receipt } from "lucide-react";
+import { DollarSign } from "lucide-react";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 export const Route = createFileRoute("/_main/dashboard")({
   component: RouteComponent,
@@ -30,91 +40,70 @@ const accountsData: Account[] = [
   { id: "4", name: "PayPal", balance: 300, currency: "USD" },
 ];
 
+const revenueData = [
+  { month: "Jan", income: 5000, expenses: 3000 },
+  { month: "Feb", income: 4500, expenses: 2500 },
+  { month: "Mar", income: 6000, expenses: 3200 },
+  { month: "Apr", income: 7000, expenses: 3500 },
+  { month: "May", income: 6500, expenses: 4000 },
+  { month: "Jun", income: 7200, expenses: 3800 },
+  { month: "Jul", income: 8000, expenses: 4200 },
+  { month: "Aug", income: 9000, expenses: 4500 },
+  { month: "Sep", income: 8500, expenses: 4700 },
+  { month: "Oct", income: 9500, expenses: 5000 },
+  { month: "Nov", income: 10000, expenses: 5500 },
+  { month: "Dec", income: 11000, expenses: 6000 },
+];
+
+const transactions =[
+  {
+    id: 1,
+    description: "Salary Payment",
+    date: "2025-03-25",
+    amount: 2500.0,
+    category: "Salary",
+    status: "completed",
+    type: "income",
+  },
+  {
+    id: 2,
+    description: "Rent Payment",
+    date: "2025-03-22",
+    amount: 1200.0,
+    category: "Housing",
+    status: "completed",
+    type: "expense",
+  },
+  {
+    id: 3,
+    description: "Grocery Shopping",
+    date: "2025-03-20",
+    amount: 156.78,
+    category: "Food",
+    status: "completed",
+    type: "expense",
+  },
+  {
+    id: 4,
+    description: "Freelance Work",
+    date: "2025-03-18",
+    amount: 750.0,
+    category: "Contract Work",
+    status: "pending",
+    type: "income",
+  },
+];
 function RouteComponent() {
-  const [transactionsLoading, setTransactionsLoading] = useState(false);
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1,
-      description: "Salary Payment",
-      date: "2025-03-25",
-      amount: 2500.0,
-      category: "Salary",
-      status: "completed",
-      type: "income",
-    },
-    {
-      id: 2,
-      description: "Rent Payment",
-      date: "2025-03-22",
-      amount: 1200.0,
-      category: "Housing",
-      status: "completed",
-      type: "expense",
-    },
-    {
-      id: 3,
-      description: "Grocery Shopping",
-      date: "2025-03-20",
-      amount: 156.78,
-      category: "Food",
-      status: "completed",
-      type: "expense",
-    },
-    {
-      id: 4,
-      description: "Freelance Work",
-      date: "2025-03-18",
-      amount: 750.0,
-      category: "Contract Work",
-      status: "pending",
-      type: "income",
-    },
-    {
-      id: 5,
-      description: "Utility Bills",
-      date: "2025-03-15",
-      amount: 215.42,
-      category: "Utilities",
-      status: "pending",
-      type: "expense",
-    },
-    {
-      id: 6,
-      description: "Online Course",
-      date: "2025-03-12",
-      amount: 99.99,
-      category: "Education",
-      status: "completed",
-      type: "expense",
-    },
-    {
-      id: 7,
-      description: "Stock Dividend",
-      date: "2025-03-10",
-      amount: 325.5,
-      category: "Investment",
-      status: "completed",
-      type: "income",
-    },
-    {
-      id: 8,
-      description: "Car Repair",
-      date: "2025-03-05",
-      amount: 430.0,
-      category: "Automotive",
-      status: "failed",
-      type: "expense",
-    },
-  ]);
-  const [accounts, setAccounts] = useState<Account[]>(accountsData);
+  
+  const [accounts] = useState<Account[]>(accountsData);
 
   return (
-    <div className="w-full md:px-12 md:pb-12 pb-32">
+    <div className="w-full min-h-screen md:px-12 md:pb-12 pb-32 overflow-auto">
       <div className="w-full flex flex-col justify-start items-start px-6 mt-8">
         {/* Header */}
-        <div className="w-full flex md:flex-row flex-col justify-between items-center mt-4">
+        <div className="w-full flex flex-row justify-between items-start mt-4">
           <div className="text-[26px] font-bold">Dashboard</div>
-          <Button >Add Account</Button>
+          <Button>Add Account</Button>
         </div>
 
         {/* Balance Cards */}
@@ -135,102 +124,76 @@ function RouteComponent() {
           ))}
         </div>
 
-        {/* Transactions Table */}
-        
-        
-        <div className="mt-12 w-full flex justify-between gap-6">
-          {/* Transactions Table - Left */}
-          <div className="border rounded-[10px]  w-full ">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="text-left">Transaction</TableHead>
-                  <TableHead className="text-left">Date</TableHead>
-                  <TableHead className="text-left">Amount</TableHead>
-                  <TableHead className="text-left">Category</TableHead>
-                  <TableHead className="text-left">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {transactions.length > 0 ? (
-                  transactions.map((transaction) => (
-                    <TableRow key={transaction.id}>
-                      <TableCell className="text-left whitespace-nowrap">
-                        {transaction.description}
-                      </TableCell>
-                      <TableCell className="text-left">
-                        {transaction.date}
-                      </TableCell>
-                      <TableCell
-                        className={`text-left font-medium ${
-                          transaction.type === "income"
-                            ? "text-green-500"
-                            : "text-red-500"
-                        }`}
-                      >
-                        {transaction.type === "income" ? "+" : "-"}$
-                        {transaction.amount.toFixed(2)}
-                      </TableCell>
-                      <TableCell className="text-left">
-                        {transaction.category}
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            transaction.status === "completed"
-                              ? "bg-green-100 text-green-700"
-                              : transaction.status === "pending"
-                                ? "bg-yellow-100 text-yellow-700"
-                                : "bg-red-100 text-red-700"
-                          }`}
-                        >
-                          {transaction.status}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center py-6">
-                      <div className="flex flex-col items-center">
-                        <Receipt className="h-5 w-5 mb-2" />
-                        No Transactions
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+        {/* Accounts & Chart Section */}
+        <div className="mt-12 w-full flex md:flex-row flex-col gap-6" style={{ minHeight: '400px' }}> {/* Set a minimum height */}
+        {/* Accounts - Left */}
 
-          {/* Accounts - Right */}
-          <Card className="w-[750px] ">
+          {/* Bar Chart - Right */}
+          <Card className="md:w-[70%]  w-full  md:h-[370px] h-[370px] md:block hidden">
+            <CardHeader>
+              <CardTitle>Monthly Income & Expenses</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 h-[300px]"> 
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={revenueData}
+                  margin={{ top: 20, right: 20, left: 30, bottom: 0 }}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="#e0e0e0"
+                  />
+                  <XAxis dataKey="month" tickLine={false} tickMargin={10} />
+                  <YAxis
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false} 
+                  />
+                  <Tooltip />
+                  <Legend />
+                  <Bar
+                    dataKey="income"
+                    fill="#1A1E4C"
+                    radius={4}
+                    name="Income"
+                  />
+                  <Bar
+                    dataKey="expenses"
+                    fill="#2463EB"
+                    radius={4}
+                    name="Expenses"
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          <Card className="md:w-[30%] w-full h-full">
             <CardHeader>
               <CardTitle>My Accounts</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col gap-4 w-full">
                 {accounts.length ? (
-                  accounts.slice(0, 5).map((account) => (
+                  accounts.map((account) => (
                     <div
                       key={account.id}
                       className="flex justify-between border-b last:border-none w-full pb-4"
                     >
-                      <div className="flex items-center justify-between gap-4 w-full cursor-pointer">
-                        <div className="flex gap-4 items-center">
-                          <div className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 font-bold text-lg">
-                            {account.name.charAt(0)}
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">{account.name}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {account.currency}
-                            </p>
-                          </div>
+                      <div className="flex items-center gap-4 cursor-pointer">
+                        <div className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 font-bold text-lg">
+                          {account.name.charAt(0)}
                         </div>
-                        <div className="font-medium">
-                          {account.balance.toLocaleString()} {account.currency}
+                        <div>
+                          <p className="text-sm font-medium">{account.name}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {account.currency}
+                          </p>
                         </div>
+                      </div>
+                      <div className="font-medium">
+                        {account.balance.toLocaleString()} {account.currency}
                       </div>
                     </div>
                   ))
@@ -245,8 +208,49 @@ function RouteComponent() {
             </CardContent>
           </Card>
         </div>
+        
+         <div className="w-full md:mt-0 mt-8">
+
+          <div className="w-full flex flex-row justify-between ">
+            <div className="text-[23px] font-bold">Recent Transactions</div>
+            <div className="underline cursor-pointer">view more</div>
+          </div>
+         </div>
+        {/* Transactions Table */}
+        <div className="mt-4 w-full border rounded-[10px]">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Transaction</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead>Category</TableHead>
+                <TableHead>Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {transactions.map((transaction) => (
+                <TableRow key={transaction.id}>
+                  <TableCell>{transaction.description}</TableCell>
+                  <TableCell>{transaction.date}</TableCell>
+                  <TableCell
+                    className={
+                      transaction.type === "income"
+                        ? "text-green-700"
+                        : "text-red-500"
+                    }
+                  >
+                    {transaction.type === "income" ? "+" : "-"}$
+                    {transaction.amount.toFixed(2)}
+                  </TableCell>
+                  <TableCell>{transaction.category}</TableCell>
+                  <TableCell>{transaction.status}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
-    
     </div>
   );
 }
