@@ -10,264 +10,264 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as AuthImport } from "./routes/_auth";
-import { Route as AuthLoginImport } from "./routes/_auth/login";
-import { Route as AuthSignupImport } from "./routes/_auth/signup";
-import { Route as MainImport } from "./routes/_main";
-import { Route as MainChatImport } from "./routes/_main/chat";
-import { Route as MainDashboardImport } from "./routes/_main/dashboard";
-import { Route as MainDashboardIndexImport } from "./routes/_main/dashboard/index";
-import { Route as MainDashboardLoansImport } from "./routes/_main/dashboard/loans";
-import { Route as MainIndexImport } from "./routes/_main/index";
+import { Route as rootRoute } from './routes/__root'
+import { Route as MainImport } from './routes/_main'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as MainIndexImport } from './routes/_main/index'
+import { Route as MainDashboardImport } from './routes/_main/dashboard'
+import { Route as MainChatImport } from './routes/_main/chat'
+import { Route as AuthSignupImport } from './routes/_auth/signup'
+import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as MainDashboardIndexImport } from './routes/_main/dashboard/index'
+import { Route as MainDashboardLoansImport } from './routes/_main/dashboard/loans'
 
 // Create/Update Routes
 
 const MainRoute = MainImport.update({
-  id: "/_main",
+  id: '/_main',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AuthRoute = AuthImport.update({
-  id: "/_auth",
+  id: '/_auth',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const MainIndexRoute = MainIndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => MainRoute,
-} as any);
+} as any)
 
 const MainDashboardRoute = MainDashboardImport.update({
-  id: "/dashboard",
-  path: "/dashboard",
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => MainRoute,
-} as any);
+} as any)
 
 const MainChatRoute = MainChatImport.update({
-  id: "/chat",
-  path: "/chat",
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => MainRoute,
-} as any);
+} as any)
 
 const AuthSignupRoute = AuthSignupImport.update({
-  id: "/signup",
-  path: "/signup",
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 
 const AuthLoginRoute = AuthLoginImport.update({
-  id: "/login",
-  path: "/login",
+  id: '/login',
+  path: '/login',
   getParentRoute: () => AuthRoute,
-} as any);
+} as any)
 
 const MainDashboardIndexRoute = MainDashboardIndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => MainDashboardRoute,
-} as any);
+} as any)
 
 const MainDashboardLoansRoute = MainDashboardLoansImport.update({
-  id: "/loans",
-  path: "/loans",
+  id: '/loans',
+  path: '/loans',
   getParentRoute: () => MainDashboardRoute,
-} as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/_auth": {
-      id: "/_auth";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof AuthImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/_main": {
-      id: "/_main";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof MainImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/_auth/login": {
-      id: "/_auth/login";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof AuthLoginImport;
-      parentRoute: typeof AuthImport;
-    };
-    "/_auth/signup": {
-      id: "/_auth/signup";
-      path: "/signup";
-      fullPath: "/signup";
-      preLoaderRoute: typeof AuthSignupImport;
-      parentRoute: typeof AuthImport;
-    };
-    "/_main/chat": {
-      id: "/_main/chat";
-      path: "/chat";
-      fullPath: "/chat";
-      preLoaderRoute: typeof MainChatImport;
-      parentRoute: typeof MainImport;
-    };
-    "/_main/dashboard": {
-      id: "/_main/dashboard";
-      path: "/dashboard";
-      fullPath: "/dashboard";
-      preLoaderRoute: typeof MainDashboardImport;
-      parentRoute: typeof MainImport;
-    };
-    "/_main/": {
-      id: "/_main/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof MainIndexImport;
-      parentRoute: typeof MainImport;
-    };
-    "/_main/dashboard/loans": {
-      id: "/_main/dashboard/loans";
-      path: "/loans";
-      fullPath: "/dashboard/loans";
-      preLoaderRoute: typeof MainDashboardLoansImport;
-      parentRoute: typeof MainDashboardImport;
-    };
-    "/_main/dashboard/": {
-      id: "/_main/dashboard/";
-      path: "/";
-      fullPath: "/dashboard/";
-      preLoaderRoute: typeof MainDashboardIndexImport;
-      parentRoute: typeof MainDashboardImport;
-    };
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/_main': {
+      id: '/_main'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof MainImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/signup': {
+      id: '/_auth/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof AuthSignupImport
+      parentRoute: typeof AuthImport
+    }
+    '/_main/chat': {
+      id: '/_main/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof MainChatImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/dashboard': {
+      id: '/_main/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof MainDashboardImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/': {
+      id: '/_main/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof MainIndexImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/dashboard/loans': {
+      id: '/_main/dashboard/loans'
+      path: '/loans'
+      fullPath: '/dashboard/loans'
+      preLoaderRoute: typeof MainDashboardLoansImport
+      parentRoute: typeof MainDashboardImport
+    }
+    '/_main/dashboard/': {
+      id: '/_main/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof MainDashboardIndexImport
+      parentRoute: typeof MainDashboardImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AuthRouteChildren {
-  AuthLoginRoute: typeof AuthLoginRoute;
-  AuthSignupRoute: typeof AuthSignupRoute;
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthLoginRoute: AuthLoginRoute,
   AuthSignupRoute: AuthSignupRoute,
-};
+}
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MainDashboardRouteChildren {
-  MainDashboardLoansRoute: typeof MainDashboardLoansRoute;
-  MainDashboardIndexRoute: typeof MainDashboardIndexRoute;
+  MainDashboardLoansRoute: typeof MainDashboardLoansRoute
+  MainDashboardIndexRoute: typeof MainDashboardIndexRoute
 }
 
 const MainDashboardRouteChildren: MainDashboardRouteChildren = {
   MainDashboardLoansRoute: MainDashboardLoansRoute,
   MainDashboardIndexRoute: MainDashboardIndexRoute,
-};
+}
 
 const MainDashboardRouteWithChildren = MainDashboardRoute._addFileChildren(
-  MainDashboardRouteChildren
-);
+  MainDashboardRouteChildren,
+)
 
 interface MainRouteChildren {
-  MainChatRoute: typeof MainChatRoute;
-  MainDashboardRoute: typeof MainDashboardRouteWithChildren;
-  MainIndexRoute: typeof MainIndexRoute;
+  MainChatRoute: typeof MainChatRoute
+  MainDashboardRoute: typeof MainDashboardRouteWithChildren
+  MainIndexRoute: typeof MainIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainChatRoute: MainChatRoute,
   MainDashboardRoute: MainDashboardRouteWithChildren,
   MainIndexRoute: MainIndexRoute,
-};
+}
 
-const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren);
+const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 export interface FileRoutesByFullPath {
-  "": typeof MainRouteWithChildren;
-  "/login": typeof AuthLoginRoute;
-  "/signup": typeof AuthSignupRoute;
-  "/chat": typeof MainChatRoute;
-  "/dashboard": typeof MainDashboardRouteWithChildren;
-  "/": typeof MainIndexRoute;
-  "/dashboard/loans": typeof MainDashboardLoansRoute;
-  "/dashboard/": typeof MainDashboardIndexRoute;
+  '': typeof MainRouteWithChildren
+  '/login': typeof AuthLoginRoute
+  '/signup': typeof AuthSignupRoute
+  '/chat': typeof MainChatRoute
+  '/dashboard': typeof MainDashboardRouteWithChildren
+  '/': typeof MainIndexRoute
+  '/dashboard/loans': typeof MainDashboardLoansRoute
+  '/dashboard/': typeof MainDashboardIndexRoute
 }
 
 export interface FileRoutesByTo {
-  "": typeof AuthRouteWithChildren;
-  "/login": typeof AuthLoginRoute;
-  "/signup": typeof AuthSignupRoute;
-  "/chat": typeof MainChatRoute;
-  "/": typeof MainIndexRoute;
-  "/dashboard/loans": typeof MainDashboardLoansRoute;
-  "/dashboard": typeof MainDashboardIndexRoute;
+  '': typeof AuthRouteWithChildren
+  '/login': typeof AuthLoginRoute
+  '/signup': typeof AuthSignupRoute
+  '/chat': typeof MainChatRoute
+  '/': typeof MainIndexRoute
+  '/dashboard/loans': typeof MainDashboardLoansRoute
+  '/dashboard': typeof MainDashboardIndexRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/_auth": typeof AuthRouteWithChildren;
-  "/_main": typeof MainRouteWithChildren;
-  "/_auth/login": typeof AuthLoginRoute;
-  "/_auth/signup": typeof AuthSignupRoute;
-  "/_main/chat": typeof MainChatRoute;
-  "/_main/dashboard": typeof MainDashboardRouteWithChildren;
-  "/_main/": typeof MainIndexRoute;
-  "/_main/dashboard/loans": typeof MainDashboardLoansRoute;
-  "/_main/dashboard/": typeof MainDashboardIndexRoute;
+  __root__: typeof rootRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/_main': typeof MainRouteWithChildren
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/signup': typeof AuthSignupRoute
+  '/_main/chat': typeof MainChatRoute
+  '/_main/dashboard': typeof MainDashboardRouteWithChildren
+  '/_main/': typeof MainIndexRoute
+  '/_main/dashboard/loans': typeof MainDashboardLoansRoute
+  '/_main/dashboard/': typeof MainDashboardIndexRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | ""
-    | "/login"
-    | "/signup"
-    | "/chat"
-    | "/dashboard"
-    | "/"
-    | "/dashboard/loans"
-    | "/dashboard/";
-  fileRoutesByTo: FileRoutesByTo;
+    | ''
+    | '/login'
+    | '/signup'
+    | '/chat'
+    | '/dashboard'
+    | '/'
+    | '/dashboard/loans'
+    | '/dashboard/'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | ""
-    | "/login"
-    | "/signup"
-    | "/chat"
-    | "/"
-    | "/dashboard/loans"
-    | "/dashboard";
+    | ''
+    | '/login'
+    | '/signup'
+    | '/chat'
+    | '/'
+    | '/dashboard/loans'
+    | '/dashboard'
   id:
-    | "__root__"
-    | "/_auth"
-    | "/_main"
-    | "/_auth/login"
-    | "/_auth/signup"
-    | "/_main/chat"
-    | "/_main/dashboard"
-    | "/_main/"
-    | "/_main/dashboard/loans"
-    | "/_main/dashboard/";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/_auth'
+    | '/_main'
+    | '/_auth/login'
+    | '/_auth/signup'
+    | '/_main/chat'
+    | '/_main/dashboard'
+    | '/_main/'
+    | '/_main/dashboard/loans'
+    | '/_main/dashboard/'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  AuthRoute: typeof AuthRouteWithChildren;
-  MainRoute: typeof MainRouteWithChildren;
+  AuthRoute: typeof AuthRouteWithChildren
+  MainRoute: typeof MainRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   MainRoute: MainRouteWithChildren,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
