@@ -195,7 +195,7 @@ function RouteComponent() {
             </Link>
           </div>
           <Button isLoading={isPending} className="w-full">
-            Login
+            Sign Up
           </Button>
         </form>
       </div>
