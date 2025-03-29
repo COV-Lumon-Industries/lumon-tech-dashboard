@@ -5,9 +5,9 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useForm } from '@tanstack/react-form'
 import { wait } from '@/utils';
 
-export const Route = createFileRoute('/_auth/login')({
+export const Route = createFileRoute("/_auth/login")({
   component: RouteComponent,
-})
+});
 
 type formType = {
   email: string;
