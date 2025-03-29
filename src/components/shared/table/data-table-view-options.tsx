@@ -1,7 +1,7 @@
-import { Table } from '@tanstack/react-table';
-import { MixerHorizontalIcon } from '@radix-ui/react-icons';
+import { Table } from "@tanstack/react-table";
+import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -9,8 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-
+} from "@/components/ui/dropdown-menu";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
@@ -22,19 +21,18 @@ export function DataTableViewOptions<TData>({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-      <Button
-  size="sm"
-  variant="table"
-  className="hidden  border-2 lg:flex lg:items-center lg:justify-center text-neutral-dark space-x-2"
->
-  <MixerHorizontalIcon className="h-4 w-4" />
-  <p className="text-sm leading-none">View</p>
-</Button>
-
+        <Button
+          size="sm"
+          variant="table"
+          className="hidden  border-2 lg:flex lg:items-center lg:justify-center text-neutral-dark space-x-2"
+        >
+          <MixerHorizontalIcon className="h-4 w-4" />
+          <p className="text-sm leading-none">View</p>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>
-           <p className="leading-7 [&:not(:first-child)]:mt-6">Toggle columns</p>
+          <p className="leading-7 [&:not(:first-child)]:mt-6">Toggle columns</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {
@@ -47,7 +45,7 @@ export function DataTableViewOptions<TData>({
             .getAllColumns()
             .filter(
               (column) =>
-                typeof column.accessorFn !== 'undefined' && column.getCanHide()
+                typeof column.accessorFn !== "undefined" && column.getCanHide(),
             )
             .map((column) => {
               return (

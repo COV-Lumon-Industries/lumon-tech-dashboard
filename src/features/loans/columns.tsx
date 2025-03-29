@@ -1,9 +1,7 @@
 import { Loan } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 
-
 export const columns: ColumnDef<Loan>[] = [
-
   {
     accessorKey: "amount",
     header: "Amount",
@@ -39,7 +37,11 @@ export const columns: ColumnDef<Loan>[] = [
         approved: "text-green-500",
         rejected: "text-red-500",
       };
-      return <span className={statusColors[status] || "text-gray-500"}>{status}</span>;
+      return (
+        <span className={statusColors[status] || "text-gray-500"}>
+          {status}
+        </span>
+      );
     },
   },
 ];
