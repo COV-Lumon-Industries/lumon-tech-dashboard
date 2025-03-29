@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 import {
   ColumnDef,
@@ -13,8 +13,7 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   PaginationState,
-} from '@tanstack/react-table';
-
+} from "@tanstack/react-table";
 
 //import { RangeOptions, TableFacetProps } from '@/types';
 
@@ -24,14 +23,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/table";
+import { Separator } from "@/components/ui/separator";
 
-import { DataTableContent } from './data-table-content';
-import { DataTableToolbar } from './data-table-toolbar';
-import { DataTablePagination } from './data-table-pagination';
-import { TableFacetProps } from '@/types';
-import { cn, globalTableFilterFn } from '@/lib/utils';
+import { DataTableContent } from "./data-table-content";
+import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTablePagination } from "./data-table-pagination";
+import { TableFacetProps } from "@/types";
+import { cn, globalTableFilterFn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   data: TData[];
@@ -47,7 +46,7 @@ interface DataTableProps<TData, TValue> {
   containerClassName?: string;
   showColumnControl?: boolean;
   shouldExport?: boolean;
-  mode?: 'single' | 'range';
+  mode?: "single" | "range";
   //dateRange?: Date | RangeOptions;
   initialSort?: SortingState;
   facetOptions?: TableFacetProps[];
@@ -68,7 +67,7 @@ export function DataTable<TData, TValue>({
   isLoading = false,
   containerClassName,
   showColumnControl = true,
-  inputPlaceholder = 'Filter anything...',
+  inputPlaceholder = "Filter anything...",
 
   onClickCell,
   handleRefreshTable,
@@ -82,15 +81,15 @@ export function DataTable<TData, TValue>({
   });
   const [sorting, setSorting] = React.useState<SortingState>(initialSort ?? []);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
 
   const resetScroll = () => {
     ref?.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+      behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -129,8 +128,8 @@ export function DataTable<TData, TValue>({
     <div
       ref={ref}
       className={cn(
-        'flex flex-col space-y-4 px-4 py-3 bg-background rounded-xl border border-neutral-lighter shadow-sm shadow-neutral-lighter',
-        containerClassName
+        "flex flex-col space-y-4 px-4 py-3 bg-background rounded-xl border border-neutral-lighter shadow-sm shadow-neutral-lighter",
+        containerClassName,
       )}
     >
       <DataTableToolbar
@@ -145,7 +144,7 @@ export function DataTable<TData, TValue>({
 
       <Separator />
 
-      <Table className={cn('max-h-64 overflow-auto', tableClassName)}>
+      <Table className={cn("max-h-64 overflow-auto", tableClassName)}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -160,7 +159,7 @@ export function DataTable<TData, TValue>({
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 );
@@ -170,7 +169,7 @@ export function DataTable<TData, TValue>({
         </TableHeader>
 
         <TableBody
-          className={cn('max-h-64 overflow-auto mini-scrollbar', bodyClassName)}
+          className={cn("max-h-64 overflow-auto mini-scrollbar", bodyClassName)}
         >
           <DataTableContent
             table={table}

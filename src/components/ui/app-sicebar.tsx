@@ -1,30 +1,30 @@
-"use client"
+"use client";
 
 import {
-    AudioWaveform,
-    BookOpen,
-    Bot,
-    Command,
-    Frame,
-    GalleryVerticalEnd,
-    Map,
-    PieChart,
-    Settings2,
-    SquareTerminal,
-} from "lucide-react"
-import * as React from "react"
+  AudioWaveform,
+  BookOpen,
+  Bot,
+  Command,
+  Frame,
+  GalleryVerticalEnd,
+  Map,
+  PieChart,
+  Settings2,
+  SquareTerminal,
+} from "lucide-react";
+import * as React from "react";
 
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarHeader,
-    SidebarRail,
-} from "@/components/ui/sidebar"
-import { NavMain } from "./nav-main"
-import { NavUser } from "./nav-user"
-import { TeamSwitcher } from "./team-switcher"
-import logo from "@/assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM.webp"
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import { NavMain } from "./nav-main";
+import { NavUser } from "./nav-user";
+import { TeamSwitcher } from "./team-switcher";
+import logo from "@/assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM.webp";
 
 // This is sample data.
 const data = {
@@ -56,25 +56,21 @@ const data = {
       url: "#",
       icon: SquareTerminal,
       isActive: true,
- 
     },
     {
       title: "Models",
       url: "#",
       icon: Bot,
-
     },
     {
       title: "Documentation",
       url: "#",
       icon: BookOpen,
-  
     },
     {
       title: "Settings",
       url: "#",
       icon: Settings2,
-   
     },
   ],
   projects: [
@@ -94,11 +90,11 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon"  {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
@@ -111,5 +107,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
