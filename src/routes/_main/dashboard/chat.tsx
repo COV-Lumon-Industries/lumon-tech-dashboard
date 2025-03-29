@@ -18,7 +18,7 @@ import { CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 
-export const Route = createFileRoute("/_main/chat")({
+export const Route = createFileRoute("/_main/dashboard/chat")({
   component: RouteComponent,
 });
 
