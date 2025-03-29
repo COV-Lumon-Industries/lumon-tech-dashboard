@@ -1,3 +1,5 @@
+export * from "./table"
+export * from "./loan"
 export type ApiResponse<T> = {
   status: string;
   data: T;

@@ -5,6 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function globalTableFilterFn(
+  row: any,
+  columnId: any,
+  filterValues: any
+): boolean {
+  const status: string = row.getValue(columnId);
+  return filterValues.includes(status.toLowerCase());
+}
+
 export const wait = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 

@@ -141,3 +141,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+
+@layer utilities {
+  .bg-green-gray-gradient {
+    background: linear-gradient(
+      29deg,
+      #15803d 0%,
+      #1e4635 50%,
+      #27272a 100%
+    );
+  }
+}
