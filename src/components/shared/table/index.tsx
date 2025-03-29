@@ -30,8 +30,8 @@ import { Separator } from '@/components/ui/separator';
 import { DataTableContent } from './data-table-content';
 import { DataTableToolbar } from './data-table-toolbar';
 import { DataTablePagination } from './data-table-pagination';
-import { cn, globalTableFilterFn} from '@/lib';
 import { TableFacetProps } from '@/types';
+import { cn } from '@/lib/utils';
 
 interface DataTableProps<TData, TValue> {
   data: TData[];
