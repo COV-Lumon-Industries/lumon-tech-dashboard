@@ -1,4 +1,4 @@
-import { wait } from "@/utils";
+import { wait } from "@/lib/utils";
 import React from "react";
 
 export interface user {
@@ -16,8 +16,6 @@ const AuthContext = React.createContext<IAuthContext | null>(null);
 
 const key = "syka.auth.user";
 
-
-
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = React.useState<user | null>(null);
   const isAuthenticated = !!user;
@@ -34,8 +32,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(data);
   }, []);
 
-  React.useEffect(() => {
-  }, []);
+  React.useEffect(() => {}, []);
 
   return (
     <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>

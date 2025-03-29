@@ -1,25 +1,25 @@
-import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
-  TableHeader,
-  TableRow,
-  TableHead,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
+import { createFileRoute } from "@tanstack/react-router";
 import { DollarSign } from "lucide-react";
+import { useState } from "react";
 import {
-  ResponsiveContainer,
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
 } from "recharts";
 
 export const Route = createFileRoute("/_main/dashboard")({
@@ -55,7 +55,7 @@ const revenueData = [
   { month: "Dec", income: 11000, expenses: 6000 },
 ];
 
-const transactions =[
+const transactions = [
   {
     id: 1,
     description: "Salary Payment",
@@ -94,7 +94,6 @@ const transactions =[
   },
 ];
 function RouteComponent() {
-  
   const [accounts] = useState<Account[]>(accountsData);
 
   return (
@@ -125,15 +124,19 @@ function RouteComponent() {
         </div>
 
         {/* Accounts & Chart Section */}
-        <div className="mt-12 w-full flex md:flex-row flex-col gap-6" style={{ minHeight: '400px' }}> {/* Set a minimum height */}
-        {/* Accounts - Left */}
-
+        <div
+          className="mt-12 w-full flex md:flex-row flex-col gap-6"
+          style={{ minHeight: "400px" }}
+        >
+          {" "}
+          {/* Set a minimum height */}
+          {/* Accounts - Left */}
           {/* Bar Chart - Right */}
           <Card className="md:w-[70%]  w-full  md:h-[370px] h-[370px] md:block hidden">
             <CardHeader>
               <CardTitle>Monthly Income & Expenses</CardTitle>
             </CardHeader>
-            <CardContent className="p-4 h-[300px]"> 
+            <CardContent className="p-4 h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={revenueData}
@@ -145,11 +148,7 @@ function RouteComponent() {
                     stroke="#e0e0e0"
                   />
                   <XAxis dataKey="month" tickLine={false} tickMargin={10} />
-                  <YAxis
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={false} 
-                  />
+                  <YAxis tickLine={false} tickMargin={10} axisLine={false} />
                   <Tooltip />
                   <Legend />
                   <Bar
@@ -168,7 +167,6 @@ function RouteComponent() {
               </ResponsiveContainer>
             </CardContent>
           </Card>
-
           <Card className="md:w-[30%] w-full h-full">
             <CardHeader>
               <CardTitle>My Accounts</CardTitle>
@@ -208,14 +206,13 @@ function RouteComponent() {
             </CardContent>
           </Card>
         </div>
-        
-         <div className="w-full md:mt-0 mt-8">
 
+        <div className="w-full md:mt-0 mt-8">
           <div className="w-full flex flex-row justify-between ">
             <div className="text-[23px] font-bold">Recent Transactions</div>
             <div className="underline cursor-pointer">view more</div>
           </div>
-         </div>
+        </div>
         {/* Transactions Table */}
         <div className="mt-4 w-full border rounded-[10px]">
           <Table>
