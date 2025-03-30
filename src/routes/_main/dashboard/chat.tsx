@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth } from "@/context/auth-provider";
 
 // Define types for badge actions
 type BadgeAction = {
@@ -239,18 +240,32 @@ function RouteComponent() {
       },
     });
 
-  // Hardcoded base URL and Auth Token (Consider moving to environment variables)
+  const { user } = useAuth();
+
+  // Hardcoded base URL (Consider moving to environment variables)
   const API_BASE_URL = "http://145.223.34.236:9000";
-  const AUTH_TOKEN =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDMzOTc5ODksInVzZXJfaWQiOiJiMzM5MjJmZC05M2RmLTRjYTYtYjVkNi01Mzk2ZmUxZmQyZmYiLCJ1c2VyX3JvbGUiOiJjb21tb24ifQ.K4JURHCb1k14vXo6iBAfYPpVYO20S_QYHNLv9ofJaOQ";
 
   const handleBadgeClick = async (action: BadgeAction) => {
+    // Check if user data is available
+    if (!user || !user.token || !user.id) {
+      console.error("User data not available for API request.");
+      // Optionally, inform the user in the chat
+      append({
+        id: window.crypto.randomUUID(),
+        role: "assistant",
+        content:
+          "Sorry, I cannot perform this action without user authentication.",
+      });
+      return;
+    }
+
     const { type, prompt } = action;
     let url = "";
+    const authToken = `Bearer ${user.token}`; // Use dynamic token
     let options: RequestInit = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: AUTH_TOKEN,
+        Authorization: authToken, // Use dynamic auth token
       },
     };
 
@@ -262,14 +277,13 @@ function RouteComponent() {
           options.body = JSON.stringify({ prompt });
           break;
         case "loan":
-          // Specific endpoint for loan requests, using hardcoded borrower ID for now
-          // TODO: Dynamically get borrower ID if necessary
-          const borrowerId = "5903bf1f-dee9-4f2b-9e54-7e80371c0b19";
+          // Use dynamic borrower ID from user data
+          const borrowerId = user.id; // Use dynamic user ID
           url = `${API_BASE_URL}/api/loan-requests/borrower/${borrowerId}`;
           options.method = "GET";
           // Remove Content-Type and body for GET request
           if (options.headers) {
-            // @ts-ignore
+            // @ts-ignore - Keep this ignore or fix type if needed
             delete options.headers["Content-Type"];
           }
           delete options.body; // Ensure body is not sent
