@@ -13,16 +13,18 @@ export type PostRegisterResponse = ApiResponse<{
       password: string;
       email: string;
       user_role: string;
-  };
-}>;
-
-export type PostLoginResponse = ApiResponse<{
-  token: string;
-  user: {
-    id: string;
-    username: string;
-    password: string;
-    email: string;
-    user_role: string;
+      phone_number: string;
+    };
+  }>;
+  
+  export type PostLoginResponse = ApiResponse<{
+    token: string;
+    user: {
+      id: string;
+      username: string;
+      password: string;
+      email: string;
+      user_role: string;
+      phone_number: string;
   };
 }>;
