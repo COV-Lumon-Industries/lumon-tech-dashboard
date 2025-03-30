@@ -7,6 +7,7 @@ export interface user {
   password: string;
   email: string;
   user_role: string;
+  phone_number: string;
 }
 export interface IAuthContext {
   isAuthenticated: boolean;

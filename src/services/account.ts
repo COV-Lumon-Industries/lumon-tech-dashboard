@@ -16,3 +16,7 @@ export async function GetTransactionData() {
 export function GetAllAccounts(){
     return http.get("/accounts/")
 }
+
+export function getWalletData(id: string) { 
+    return http.get(`/users/${id}`)
+}

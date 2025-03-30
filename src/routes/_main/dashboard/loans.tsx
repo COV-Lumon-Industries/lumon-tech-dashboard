@@ -2,10 +2,13 @@ import { DataTable } from "@/components/shared/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/context/auth-provider";
 
 import { columns } from "@/features/loans/columns";
 import CreditScoreCard from "@/features/loans/credit-score";
 import { RequestLoanDialog } from "@/features/loans/request-loan";
+import { maskNumber } from "@/lib";
+import { getWalletData } from "@/services/account";
 import { GetAllLoans } from "@/services/loans";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -16,10 +19,17 @@ export const Route = createFileRoute("/_main/dashboard/loans")({
 });
 
 function RouteComponent() {
+  const {user} = useAuth();
   const {data,isLoading} = useQuery({
     queryKey:["loans"],
-    queryFn:GetAllLoans
-  })
+    queryFn: GetAllLoans
+  });
+  const {data: walletData } = useQuery({
+    queryKey:["userDataWalend"],
+    queryFn: () => getWalletData(user?.id ?? ""),
+    enabled: !!user?.id,
+  });
+
   console.log("HERE",data)
   return (
     <div className="w-full min-h-screen pb-8">
@@ -56,16 +66,16 @@ function RouteComponent() {
                   Account Balance
                 </Label>
                 <p className="text-2xl font-semibold font-raleway">
-                  Ghc 9000.00
+                  Ghc 5000
                 </p>
               </div>
               <CreditCardIcon className="w-6 h-6 text-white" />
             </CardTitle>
             <CardContent className="p-0">
               <Label className="text-md text-neutral-200">
-                Papa Yaw Agyeman-Gyekye
+                {user?.username}
               </Label>
-              <p className="text-xl font-medium font-raleway">020******8341</p>
+              <p className="text-xl font-medium font-raleway">{maskNumber(user?.phone_number ?? "")}</p>
             </CardContent>
           </Card>
           <div className="grid grid-cols-2 gap-5 ">
@@ -82,9 +92,8 @@ function RouteComponent() {
           <DataTable
             title="Loan Listings"
             data={data?.data?.loan_requests ?? []}
-            isError={false}
             isLoading={isLoading}
-            columns={columns}
+            columns={columns as any}
           />
         </div>
         <div className="h-full ">
