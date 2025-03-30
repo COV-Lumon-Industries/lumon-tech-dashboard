@@ -45,13 +45,14 @@ interface Account {
   name: string
   balance: number
   currency: string
+  type: string
 }
 
 const accountsData: Account[] = [
-  { id: "1", name: "Bank of America", balance: 5000, currency: "USD" },
-  { id: "2", name: "MTN Mobile Money", balance: 1200, currency: "GHS" },
-  { id: "3", name: "Wise USD", balance: 800, currency: "USD" },
-  { id: "4", name: "PayPal", balance: 300, currency: "USD" },
+  { id: "1", name: "Fidelity Bank", balance: 5000, currency: "₵" ,type : "bank" },
+  { id: "2", name: "MTN Mobile Money", balance: 1200, currency: "₵" , type : "wallet"},
+  { id: "3", name: "Acheive", balance: 800, currency: "₵", type : "wallet" },
+  { id: "4", name: "Accrue", balance: 300, currency: "₵" , type : "wallet"},
 ]
 
 // Helper function to get week number and date range
@@ -170,7 +171,7 @@ function RouteComponent() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-start">
-                ${" "}
+              ₵{" "}
                 {data?.data?.transactions && data.data.transactions.length > 0
                   ? data.data.transactions[0].balance_after.toLocaleString()
                   : "0.00"}
@@ -185,7 +186,7 @@ function RouteComponent() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-start">
-                ${" "}
+              ₵{" "}
                 {data?.data?.transactions
                   ? data.data.transactions
                       .filter((t) => t.transaction_type === "CREDIT")
@@ -203,7 +204,7 @@ function RouteComponent() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-start">
-                ${" "}
+              ₵{" "}
                 {data?.data?.transactions
                   ? data.data.transactions
                       .filter((t) => t.transaction_type === "DEBIT")
@@ -264,11 +265,11 @@ function RouteComponent() {
                         </div>
                         <div>
                           <p className="text-sm font-medium">{account.name}</p>
-                          <p className="text-sm text-muted-foreground">{account.currency}</p>
+                          <p className="text-sm text-muted-foreground">{account.type}</p>
                         </div>
                       </div>
                       <div className="font-medium">
-                        {account.balance.toLocaleString()} {account.currency}
+                      {account.currency} {account.balance.toLocaleString()} 
                       </div>
                     </div>
                   ))
