@@ -28,72 +28,72 @@ import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { TeamSwitcher } from "./team-switcher";
 import logo from "@/assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM.webp";
+import { useAuth } from "@/context/auth-provider";
 
-// This is sample data.
-const data = {
-  user: {
-    name: "Lumon",
-    email: "m@example.com",
-    avatar: logo,
-  },
-  teams: [
-    {
-      name: "Lumon Industries",
-      logo: GalleryVerticalEnd,
-      plan: "",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  navMain: [
-   
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      icon: House,
-    },
-    {
-      title: "Loans",
-      url: "/dashboard/loans",
-      icon: Wallet,
-    },
-    {
-      title: "Chat",
-      url: "/dashboard/chat",
-      icon: MessageSquareText,  
-      isActive: true,
-    },
- 
-
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAuth();
+
+  const data = {
+    user: {
+      name: user?.username || "Lumon",
+      email: user?.email || "example@example.com", 
+      avatar: logo,
+    },
+    teams: [
+      {
+        name: "Lumon Industries",
+        logo: GalleryVerticalEnd,
+        plan: "",
+      },
+      {
+        name: "Acme Corp.",
+        logo: AudioWaveform,
+        plan: "Startup",
+      },
+      {
+        name: "Evil Corp.",
+        logo: Command,
+        plan: "Free",
+      },
+    ],
+    navMain: [
+      {
+        title: "Dashboard",
+        url: "/dashboard",
+        icon: House,
+      },
+      {
+        title: "Loans",
+        url: "/dashboard/loans",
+        icon: Wallet,
+      },
+      {
+        title: "Chat",
+        url: "/dashboard/chat",
+        icon: MessageSquareText,
+        isActive: true,
+      },
+    ],
+    projects: [
+      {
+        name: "Design Engineering",
+        url: "#",
+        icon: Frame,
+      },
+      {
+        name: "Sales & Marketing",
+        url: "#",
+        icon: PieChart,
+      },
+      {
+        name: "Travel",
+        url: "#",
+        icon: Map,
+      },
+    ],
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -101,7 +101,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
@@ -110,3 +109,4 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </Sidebar>
   );
 }
+
