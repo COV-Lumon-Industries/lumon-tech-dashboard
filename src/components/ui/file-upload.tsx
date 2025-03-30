@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { useMutation } from "@tanstack/react-query";
 import UploadDocument from "@/services/upload-document";
 
-export function FileUpload03({setUriId}:{setUriId:  React.Dispatch<React.SetStateAction<string>>}) {
+export function FileUpload03({ setUriId }: { setUriId: React.Dispatch<React.SetStateAction<string>> }) {
   const [uploadState, setUploadState] = useState<{
     file: File | null;
     progress: number;
@@ -21,7 +21,7 @@ export function FileUpload03({setUriId}:{setUriId:  React.Dispatch<React.SetStat
   const [showDummy, setShowDummy] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-const validFileTypes = ["application/pdf"];
+  const validFileTypes = ["application/pdf"];
 
   const handleFile = (file: File | undefined) => {
     if (!file) return;
@@ -84,25 +84,26 @@ const validFileTypes = ["application/pdf"];
 
   const { file, progress, uploading } = uploadState;
 
-const {mutateAsync,isPending}= useMutation({
- mutationKey:["upload-file"],
- mutationFn: UploadDocument,
- onSuccess:(data)=>{
-    
-    setUriId(`http://65.21.5.249:8081/files/download/${data?.data?.url}`)
- }})
+  const { mutateAsync, isPending } = useMutation({
+    mutationKey: ["upload-file"],
+    mutationFn: UploadDocument,
+    onSuccess: (data) => {
 
- function handleUpload(){
-    toast.promise(mutateAsync(file!),{
+      setUriId(`https://octopush.blackprince.tech/files/download/${data?.data?.url}`)
+    }
+  })
+
+  function handleUpload() {
+    toast.promise(mutateAsync(file!), {
       loading: "Uploading file...",
       success: "File uploaded successfully",
-        error: "Error uploading file",
+      error: "Error uploading file",
     })
- }
+  }
   return (
     <div className="mx-auto max-w-full">
       <form onSubmit={(e) => e.preventDefault()}>
-     
+
 
         <div
           className="flex justify-center rounded-md border mt-2 border-dashed border-input px-6 py-20"
@@ -227,7 +228,7 @@ const {mutateAsync,isPending}= useMutation({
             className="whitespace-nowrap"
             disabled={!file || uploading || progress < 100}
           >
- Upload
+            Upload
           </Button>
         </div>
       </form>
