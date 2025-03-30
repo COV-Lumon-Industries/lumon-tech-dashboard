@@ -36,6 +36,7 @@ const http = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: false,
 });
 
 http.interceptors.request.use(

@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { WaitingDialog } from "@/features/home/processing-dialog";
 import { CreateTransactionData, PostDocument } from "@/services/account";
 import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -15,6 +15,7 @@ export const Route = createFileRoute("/_main/dashboard/file-upload")({
 });
 
 function MtnUploadPage() {
+  const router = useRouter();
   const [uriId, setUriId] = useState("");
 
   const [open, setOpen] = useState(false);
@@ -23,6 +24,10 @@ function MtnUploadPage() {
     mutationFn: CreateTransactionData,
     onSuccess:()=>{
       setOpen(false);
+      toast.success("Transaction data created successfully");
+      router.navigate({
+        to: "/dashboard",
+      });
     },
     onError:()=>{
       setOpen(false);
@@ -79,7 +84,8 @@ function MtnUploadPage() {
           </div>
           <div className="flex justify-end gap-4 pt-4">
             <Button isLoading={isPostingDocument || isPending} onClick={()=>{
-              mutate(uriId)
+              mutate(uriId);
+              setOpen(true);
             }}>
               Connect Account
             </Button>

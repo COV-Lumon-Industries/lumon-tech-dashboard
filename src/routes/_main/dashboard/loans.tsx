@@ -81,8 +81,9 @@ function RouteComponent() {
         <div className="h-full rounded lg:col-span-2">
           <DataTable
             title="Loan Listings"
-            data={[]}
-            isLoading={false}
+            data={data?.data?.loan_requests ?? []}
+            isError={false}
+            isLoading={isLoading}
             columns={columns}
           />
         </div>

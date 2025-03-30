@@ -1,38 +1,50 @@
-import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-} from "@/components/ui/table";
-import { DollarSign } from "lucide-react";
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+"use client"
 
-import { Link } from "@tanstack/react-router";
+import { useState } from "react"
+import { createFileRoute } from "@tanstack/react-router"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
+import { DollarSign } from "lucide-react"
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts"
+
+import { Link } from "@tanstack/react-router"
+import { useQuery } from "@tanstack/react-query"
+import { GetTransactionData } from "@/services/account"
+
+interface TransactionsResponse {
+  status: string
+  data: {
+    meta: {
+      page: number
+      page_size: number
+      total: number
+    }
+    transactions: {
+      transaction_date: string
+      from_name: string
+      from_number: string
+      transaction_type: string
+      balance_before: number
+      balance_after: number
+      amount: number
+      to_number: string
+      to_name: string
+      reference: string
+      user_id: string
+    }[]
+  }
+}
 
 export const Route = createFileRoute("/_main/dashboard/")({
   component: RouteComponent,
-});
+})
 
 interface Account {
-  id: string;
-  name: string;
-  balance: number;
-  currency: string;
+  id: string
+  name: string
+  balance: number
+  currency: string
 }
 
 const accountsData: Account[] = [
@@ -40,63 +52,103 @@ const accountsData: Account[] = [
   { id: "2", name: "MTN Mobile Money", balance: 1200, currency: "GHS" },
   { id: "3", name: "Wise USD", balance: 800, currency: "USD" },
   { id: "4", name: "PayPal", balance: 300, currency: "USD" },
-];
+]
 
-const revenueData = [
-  { month: "Jan", income: 5000, expenses: 3000 },
-  { month: "Feb", income: 4500, expenses: 2500 },
-  { month: "Mar", income: 6000, expenses: 3200 },
-  { month: "Apr", income: 7000, expenses: 3500 },
-  { month: "May", income: 6500, expenses: 4000 },
-  { month: "Jun", income: 7200, expenses: 3800 },
-  { month: "Jul", income: 8000, expenses: 4200 },
-  { month: "Aug", income: 9000, expenses: 4500 },
-  { month: "Sep", income: 8500, expenses: 4700 },
-  { month: "Oct", income: 9500, expenses: 5000 },
-  { month: "Nov", income: 10000, expenses: 5500 },
-  { month: "Dec", income: 11000, expenses: 6000 },
-];
+// Helper function to get week number and date range
+const getWeekDetails = (date: Date) => {
+  // Clone the date to avoid modifying the original
+  const d = new Date(date.getTime())
 
-const transactions = [
-  {
-    id: 1,
-    description: "Salary Payment",
-    date: "2025-03-25",
-    amount: 2500.0,
-    category: "Salary",
-    status: "completed",
-    type: "income",
-  },
-  {
-    id: 2,
-    description: "Rent Payment",
-    date: "2025-03-22",
-    amount: 1200.0,
-    category: "Housing",
-    status: "completed",
-    type: "expense",
-  },
-  {
-    id: 3,
-    description: "Grocery Shopping",
-    date: "2025-03-20",
-    amount: 156.78,
-    category: "Food",
-    status: "completed",
-    type: "expense",
-  },
-  {
-    id: 4,
-    description: "Freelance Work",
-    date: "2025-03-18",
-    amount: 750.0,
-    category: "Contract Work",
-    status: "pending",
-    type: "income",
-  },
-];
+  // Set to the first day of the week (Sunday)
+  d.setDate(d.getDate() - d.getDay())
+  const weekStart = new Date(d)
+
+  // Set to the last day of the week (Saturday)
+  d.setDate(d.getDate() + 6)
+  const weekEnd = new Date(d)
+
+  // Format dates as MM/DD
+  const formatDate = (date: Date) => `${date.getMonth() + 1}/${date.getDate()}`
+
+  return {
+    weekLabel: `${formatDate(weekStart)}-${formatDate(weekEnd)}`,
+    weekKey: `${weekStart.getFullYear()}-${weekStart.getMonth() + 1}-${weekStart.getDate()}`,
+  }
+}
+
+const processTransactionDataByWeek = (transactions: TransactionsResponse["data"]["transactions"] | undefined) => {
+  if (!transactions || transactions.length === 0) {
+    return []
+  }
+
+  // Create an object to store weekly totals
+  const weeklyTotals: Record<string, { week: string; income: number; expenses: number }> = {}
+
+  // Sort transactions by date (newest first)
+  const sortedTransactions = [...transactions].sort(
+    (a, b) => new Date(b.transaction_date).getTime() - new Date(a.transaction_date).getTime(),
+  )
+
+  // Get unique weeks from transactions (limit to last 8 weeks for readability)
+  const uniqueWeeks = new Set<string>()
+  const processedDates = new Set<string>()
+
+  sortedTransactions.forEach((transaction) => {
+    const transactionDate = new Date(transaction.transaction_date)
+    const { weekKey, weekLabel } = getWeekDetails(transactionDate)
+
+    // Add this week if we haven't seen it before
+    if (!processedDates.has(weekKey)) {
+      uniqueWeeks.add(weekKey)
+      processedDates.add(weekKey)
+
+      // Initialize the week with zero values
+      weeklyTotals[weekKey] = {
+        week: weekLabel,
+        income: 0,
+        expenses: 0,
+      }
+    }
+  })
+
+  // Limit to last 8 weeks
+  const recentWeeks = Array.from(uniqueWeeks).slice(0, 8)
+
+  // Process each transaction
+  sortedTransactions.forEach((transaction) => {
+    const transactionDate = new Date(transaction.transaction_date)
+    const { weekKey } = getWeekDetails(transactionDate)
+
+    // Only process transactions from recent weeks
+    if (recentWeeks.includes(weekKey) && weeklyTotals[weekKey]) {
+      if (transaction.transaction_type === "CREDIT") {
+        weeklyTotals[weekKey].income += transaction.amount
+      } else if (transaction.transaction_type === "DEBIT") {
+        weeklyTotals[weekKey].expenses += transaction.amount
+      }
+    }
+  })
+
+  // Convert the object to an array and sort by week (oldest first)
+  return Object.entries(weeklyTotals)
+    .sort((a, b) => {
+      // Extract dates from week keys (format: YYYY-MM-DD)
+      const dateA = new Date(Number.parseInt(a[0].split("-")[0]), Number.parseInt(a[0].split("-")[1]) - 1, Number.parseInt(a[0].split("-")[2]))
+      const dateB = new Date(Number.parseInt(b[0].split("-")[0]), Number.parseInt(b[0].split("-")[1]) - 1, Number.parseInt(b[0].split("-")[2]))
+      return dateA.getTime() - dateB.getTime()
+    })
+    .map(([_, value]) => value)
+}
+
 function RouteComponent() {
-  const [accounts] = useState<Account[]>(accountsData);
+  const [accounts] = useState<Account[]>(accountsData)
+
+  const { data, isPending } = useQuery<TransactionsResponse>({
+    queryKey: ["accounts", "transactions"],
+    queryFn: GetTransactionData,
+  })
+
+  const chartData = processTransactionDataByWeek(data?.data?.transactions)
 
   return (
     <div className="container mx-auto ">
@@ -111,20 +163,56 @@ function RouteComponent() {
 
         {/* Balance Cards */}
         <div className="flex flex-col md:flex-row gap-4 w-full mt-6">
-          {["My Balance", "Monthly Income", "Monthly Expenses"].map((title) => (
-            <Card
-              key={title}
-              className="w-full cursor-pointer md:h-full h-[150px]"
-            >
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{title}</CardTitle>
-                <DollarSign className="w-4 h-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-start">$ 100,000</div>
-              </CardContent>
-            </Card>
-          ))}
+          <Card className="w-full cursor-pointer md:h-full h-[150px]">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">My Balance</CardTitle>
+              <DollarSign className="w-4 h-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-start">
+                ${" "}
+                {data?.data?.transactions && data.data.transactions.length > 0
+                  ? data.data.transactions[0].balance_after.toLocaleString()
+                  : "0.00"}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="w-full cursor-pointer md:h-full h-[150px]">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Monthly Income</CardTitle>
+              <DollarSign className="w-4 h-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-start">
+                ${" "}
+                {data?.data?.transactions
+                  ? data.data.transactions
+                      .filter((t) => t.transaction_type === "CREDIT")
+                      .reduce((sum, t) => sum + t.amount, 0)
+                      .toLocaleString()
+                  : "0.00"}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="w-full cursor-pointer md:h-full h-[150px]">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Monthly Expenses</CardTitle>
+              <DollarSign className="w-4 h-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-start">
+                ${" "}
+                {data?.data?.transactions
+                  ? data.data.transactions
+                      .filter((t) => t.transaction_type === "DEBIT")
+                      .reduce((sum, t) => sum + t.amount, 0)
+                      .toLocaleString()
+                  : "0.00"}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Accounts & Chart Section */}
@@ -134,37 +222,30 @@ function RouteComponent() {
           {/* Bar Chart - Right */}
           <Card className="md:w-[70%] w-full md:h-auto h-[370px] md:block hidden">
             <CardHeader>
-              <CardTitle>Monthly Income & Expenses</CardTitle>
+              <CardTitle>Weekly Income & Expenses</CardTitle>
             </CardHeader>
             <CardContent className="p-4 h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={revenueData}
-                  margin={{ top: 20, right: 20, left: 30, bottom: 0 }}
-                >
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    vertical={false}
-                    stroke="#e0e0e0"
-                  />
-                  <XAxis dataKey="month" tickLine={false} tickMargin={10} />
-                  <YAxis tickLine={false} tickMargin={10} axisLine={false} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar
-                    dataKey="income"
-                    fill="#166434"
-                    radius={4}
-                    name="Income"
-                  />
-                  <Bar
-                    dataKey="expenses"
-                    fill="#5DD68B"
-                    radius={4}
-                    name="Expenses"
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+              {isPending ? (
+                <div className="flex items-center justify-center h-full">
+                  <p>Loading chart data...</p>
+                </div>
+              ) : chartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData} margin={{ top: 20, right: 20, left: 30, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e0e0e0" />
+                    <XAxis dataKey="week" tickLine={false} tickMargin={10} angle={-15} height={60} textAnchor="end" />
+                    <YAxis tickLine={false} tickMargin={10} axisLine={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="income" fill="#166434" radius={4} name="Income" />
+                    <Bar dataKey="expenses" fill="#5DD68B" radius={4} name="Expenses" />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full">
+                  <p>No transaction data available for chart</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -176,19 +257,14 @@ function RouteComponent() {
               <div className="flex flex-col gap-4 w-full">
                 {accounts.length ? (
                   accounts.map((account) => (
-                    <div
-                      key={account.id}
-                      className="flex justify-between border-b last:border-none w-full pb-4"
-                    >
+                    <div key={account.id} className="flex justify-between border-b last:border-none w-full pb-4">
                       <div className="flex items-center gap-4 cursor-pointer">
                         <div className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-200 text-gray-700 font-bold text-lg">
                           {account.name.charAt(0)}
                         </div>
                         <div>
                           <p className="text-sm font-medium">{account.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {account.currency}
-                          </p>
+                          <p className="text-sm text-muted-foreground">{account.currency}</p>
                         </div>
                       </div>
                       <div className="font-medium">
@@ -198,9 +274,7 @@ function RouteComponent() {
                   ))
                 ) : (
                   <div className="flex flex-col items-center justify-center text-center py-6">
-                    <p className="text-muted-foreground text-sm">
-                      No accounts available to display.
-                    </p>
+                    <p className="text-muted-foreground text-sm">No accounts available to display.</p>
                   </div>
                 )}
               </div>
@@ -221,34 +295,50 @@ function RouteComponent() {
               <TableRow>
                 <TableHead>Transaction</TableHead>
                 <TableHead>Date</TableHead>
+                <TableHead>From/To</TableHead>
                 <TableHead>Amount</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Reference</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {transactions.map((transaction) => (
-                <TableRow key={transaction.id}>
-                  <TableCell>{transaction.description}</TableCell>
-                  <TableCell>{transaction.date}</TableCell>
-                  <TableCell
-                    className={
-                      transaction.type === "income"
-                        ? "text-green-700"
-                        : "text-red-500"
-                    }
-                  >
-                    {transaction.type === "income" ? "+" : "-"}$
-                    {transaction.amount.toFixed(2)}
+              {isPending ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-4">
+                    Loading transactions...
                   </TableCell>
-                  <TableCell>{transaction.category}</TableCell>
-                  <TableCell>{transaction.status}</TableCell>
                 </TableRow>
-              ))}
+              ) : data?.data?.transactions && data.data.transactions.length > 0 ? (
+                data.data.transactions.map((transaction, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{transaction.transaction_type}</TableCell>
+                    <TableCell>{new Date(transaction.transaction_date).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {transaction.transaction_type === "CREDIT"
+                        ? `From: ${transaction.from_name || transaction.from_number}`
+                        : `To: ${transaction.to_name || transaction.to_number}`}
+                    </TableCell>
+                    <TableCell
+                      className={transaction.transaction_type === "CREDIT" ? "text-green-700" : "text-red-500"}
+                    >
+                      {transaction.transaction_type === "CREDIT" ? "+" : "-"}${transaction.amount.toFixed(2)}
+                    </TableCell>
+                    <TableCell>{transaction.transaction_type}</TableCell>
+                    <TableCell>{transaction.reference}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-4">
+                    No transactions available
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>
       </div>
     </div>
-  );
+  )
 }
+
