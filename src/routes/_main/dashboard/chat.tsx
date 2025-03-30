@@ -243,7 +243,7 @@ function RouteComponent() {
   const { user } = useAuth();
 
   // Hardcoded base URL (Consider moving to environment variables)
-  const API_BASE_URL = "http://145.223.34.236:9000";
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   const handleBadgeClick = async (action: BadgeAction) => {
     // Check if user data is available
