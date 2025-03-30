@@ -2,8 +2,6 @@
 
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
   Command,
   Frame,
   GalleryVerticalEnd,
@@ -11,12 +9,11 @@ import {
   Map,
   MessageSquareText,
   PieChart,
-  Settings2,
-  SquareTerminal,
   Wallet,
 } from "lucide-react";
 import * as React from "react";
 
+import logo from "@/assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM.webp";
 import {
   Sidebar,
   SidebarContent,
@@ -24,12 +21,10 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/context/auth-provider";
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { TeamSwitcher } from "./team-switcher";
-import logo from "@/assets/ChatGPT_Image_Mar_28_2025_11_31_52_PM.webp";
-import { useAuth } from "@/context/auth-provider";
-
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
@@ -37,7 +32,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const data = {
     user: {
       name: user?.username || "Lumon",
-      email: user?.email || "example@example.com", 
+      email: user?.email || "example@example.com",
       avatar: logo,
     },
     teams: [
@@ -109,4 +104,3 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </Sidebar>
   );
 }
-
