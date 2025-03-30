@@ -1,4 +1,4 @@
-import { openai } from "@ai-sdk/openai";
+import { google } from "@ai-sdk/google";
 import { createServerFn } from "@tanstack/react-start";
 import { streamText } from "ai";
 
@@ -92,7 +92,7 @@ export const genAIResponse = createServerFn({ method: "POST", response: "raw" })
 
     try {
       const result = streamText({
-        model: openai("gpt-4o"),
+        model: google("gemini-2.0-flash-exp"),
         messages,
         system: SYSTEM_PROMPT,
         maxSteps: 10,

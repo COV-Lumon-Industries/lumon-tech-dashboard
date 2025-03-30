@@ -52,17 +52,24 @@ function EmptyState({
 }
 
 function Messages({ messages }: { messages: Array<UIMessage> }) {
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTop =
-        messagesContainerRef.current.scrollHeight;
-    }
+    // Use setTimeout to ensure DOM is fully updated
+    const timeoutId = setTimeout(() => {
+      const viewport = scrollAreaRef.current?.querySelector(
+        '[data-slot="scroll-area-viewport"]'
+      );
+      if (viewport) {
+        viewport.scrollTop = viewport.scrollHeight;
+      }
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
   }, [messages]);
 
   return (
-    <ScrollArea className="h-[calc(100vh-140px)] w-full">
+    <ScrollArea ref={scrollAreaRef} className="h-[calc(100vh-160px)] w-full">
       <div className="pr-4 whitespace-normal">
         {messages.map(({ id, role, content }) => (
           <div key={id}>
