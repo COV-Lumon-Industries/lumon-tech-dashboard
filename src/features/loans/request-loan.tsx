@@ -17,23 +17,43 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import http from "@/lib/axios";
 import { LoanSchema, LoanSchemaTypeValues } from "@/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
 export function RequestLoanDialog() {
   const form = useForm<LoanSchemaTypeValues>({
     resolver: zodResolver(LoanSchema),
     defaultValues: {
-      amount: 500000,
+      amount: 1000,
       interest_rate: 5.75,
       loan_duration: 24,
       purpose: "Home Renovation",
     },
   });
 
+  
+  const m = useMutation({
+    mutationKey: ["request-loan"],
+    mutationFn: async (values: LoanSchemaTypeValues) => {
+      return http.post("/loan-requests", {
+        ...values,
+        amount: values.amount * 100,
+      });
+    },
+    onSuccess: () => {
+      form.reset();
+      toast.success("Loan request submitted successfully");
+    },
+  });
+
   function onSubmit(values: LoanSchemaTypeValues) {
-    console.log(values);
+    m.mutate(values);
   }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -108,7 +128,7 @@ export function RequestLoanDialog() {
               )}
             />
 
-            <Button type="submit" className="w-full">
+            <Button type="submit" isLoading={m.isPending} className="w-full">
               Submit Loan Application
             </Button>
           </form>

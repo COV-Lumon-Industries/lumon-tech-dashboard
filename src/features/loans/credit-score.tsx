@@ -8,6 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+import { GenerateCreditScore } from "@/services/loans";
+import { useQuery } from "@tanstack/react-query";
 import {
   Label,
   PolarGrid,
@@ -58,9 +60,18 @@ type ChartDataItem = {
   fill: string;
 };
 
-export default function CreditScoreCard() {
+export default async function CreditScoreCard() {
   // Sample credit score
-  const creditScore = 720;
+  // const response = await GenerateCreditScore("userId");
+  const { data: response } = useQuery({
+    queryKey: ["credit_score"],
+    queryFn: () => GenerateCreditScore("userId"),
+    refetchOnWindowFocus: false,
+  });
+
+  const creditScore = response?.data.credit_score ?? 1;
+
+
   const { status, color, loanChance } = getScoreStatus(creditScore);
 
   // Calculate percentage for chart (out of 1000)
@@ -119,7 +130,7 @@ export default function CreditScoreCard() {
                           y={(viewBox.cy ?? 0) - 12}
                           className="fill-foreground text-4xl font-bold"
                         >
-                          {creditScore}
+                          {creditScore.toFixed(0)}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

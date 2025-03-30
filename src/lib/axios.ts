@@ -36,6 +36,7 @@ const http = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: false,
 });
 
 http.interceptors.request.use(
@@ -49,6 +50,7 @@ http.interceptors.request.use(
     }
 
     const { token } = JSON.parse(data);
+    console.log("APPLE",token)
 
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;

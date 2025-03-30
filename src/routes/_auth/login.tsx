@@ -20,6 +20,7 @@ function RouteComponent() {
     mutationKey: ["login"],
     mutationFn: postLoginUser,
     onSuccess: async (data) => {
+      console.log("Login success", data);
       login({
         token: data.data.token,
         ...data.data.user,

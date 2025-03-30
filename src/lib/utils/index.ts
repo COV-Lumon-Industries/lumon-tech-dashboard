@@ -22,3 +22,14 @@ export function numberWithCommas(x: number | string): string {
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return parts.join(".");
 }
+
+export function maskNumber(input: number | string): string {
+  const str = input.toString();
+  if (str.length <= 5) return str; // If the number is too short, return as is
+
+  const firstThree = str.slice(0, 4);
+  const lastTwo = str.slice(-2);
+  const maskedPart = '*'.repeat(str.length - 5);
+
+  return `${firstThree}${maskedPart}${lastTwo}`;
+}
