@@ -1,9 +1,8 @@
 import { genAIResponse } from "@/lib/ai";
 import "@/styles/chat.index.css";
-import { useChat } from "@ai-sdk/react";
 import { createFileRoute } from "@tanstack/react-router";
-import type { UIMessage } from "ai";
-import { Send } from "lucide-react";
+import { useChat, type Message as UIMessage } from "ai/react";
+import { ClockIcon, CreditCardIcon, Send, ZapIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
@@ -13,10 +12,17 @@ import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
+
+// Define types for badge actions
+type BadgeAction = {
+  type: "stock" | "loan" | "transactions";
+  prompt?: string; // Optional prompt for specific actions like stock search
+};
 
 export const Route = createFileRoute("/_main/dashboard/chat")({
   component: RouteComponent,
@@ -26,10 +32,12 @@ function EmptyState({
   input,
   handleInputChange,
   handleSubmit,
+  handleBadgeClick,
 }: {
   input: string;
   handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   handleSubmit: React.FormEventHandler<HTMLFormElement>;
+  handleBadgeClick: (action: BadgeAction) => void; // Updated prop type
 }) {
   return (
     <div className="flex flex-col items-center justify-center w-full">
@@ -40,12 +48,57 @@ function EmptyState({
         Hi there I am Lumon ⭐, I am here to give you a personalized experience.
         Lets have a chat. What do you want to talk about?
       </p>
-      <div className="mt-4 w-[500px]">
+      <div className="mt-4 w-[500px] space-y-4">
         <ChatInput
           input={input}
           handleInputChange={handleInputChange}
           handleSubmit={handleSubmit}
         />
+
+        <div className="flex gap-2">
+          <Badge
+            className="cursor-pointer"
+            onClick={() =>
+              handleBadgeClick({
+                type: "stock",
+                prompt: "Current Stock Price of Apple",
+              })
+            } // Pass type and prompt
+          >
+            <ZapIcon
+              className="-ms-0.5 opacity-60"
+              size={12}
+              aria-hidden="true"
+            />
+            Current Stock Price of Apple
+          </Badge>
+
+          <Badge
+            className="cursor-pointer"
+            onClick={() =>
+              handleBadgeClick({ type: "loan", prompt: "Loan request" })
+            } // Pass type and prompt (assuming search for now)
+          >
+            <CreditCardIcon
+              className="-ms-0.5 opacity-60"
+              size={12}
+              aria-hidden="true"
+            />
+            Loan request
+          </Badge>
+
+          <Badge
+            className="cursor-pointer"
+            onClick={() => handleBadgeClick({ type: "transactions" })} // Pass only type
+          >
+            <ClockIcon
+              className="-ms-0.5 opacity-60"
+              size={12}
+              aria-hidden="true"
+            />
+            Recent Transactions
+          </Badge>
+        </div>
       </div>
     </div>
   );
@@ -164,17 +217,181 @@ function ChatInput({
 }
 
 function RouteComponent() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    initialMessages: [],
-    fetch: (_url, options) => {
-      const { messages } = JSON.parse(options!.body! as string);
-      return genAIResponse({
-        data: {
-          messages,
-        },
+  const { messages, input, handleInputChange, handleSubmit, append, setInput } =
+    useChat({
+      initialMessages: [],
+      fetch: (_url, options) => {
+        const { messages } = JSON.parse(options!.body! as string);
+        return genAIResponse({
+          data: {
+            messages,
+          },
+        });
+      },
+    });
+
+  // Hardcoded base URL and Auth Token (Consider moving to environment variables)
+  const API_BASE_URL = "http://145.223.34.236:9000";
+  const AUTH_TOKEN =
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDMzOTc5ODksInVzZXJfaWQiOiJiMzM5MjJmZC05M2RmLTRjYTYtYjVkNi01Mzk2ZmUxZmQyZmYiLCJ1c2VyX3JvbGUiOiJjb21tb24ifQ.K4JURHCb1k14vXo6iBAfYPpVYO20S_QYHNLv9ofJaOQ";
+
+  const handleBadgeClick = async (action: BadgeAction) => {
+    const { type, prompt } = action;
+    let url = "";
+    let options: RequestInit = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: AUTH_TOKEN,
+      },
+    };
+
+    try {
+      switch (type) {
+        case "stock":
+          url = `${API_BASE_URL}/api/chat/search`;
+          options.method = "POST";
+          options.body = JSON.stringify({ prompt });
+          break;
+        case "loan":
+          // Specific endpoint for loan requests, using hardcoded borrower ID for now
+          // TODO: Dynamically get borrower ID if necessary
+          const borrowerId = "5903bf1f-dee9-4f2b-9e54-7e80371c0b19";
+          url = `${API_BASE_URL}/api/loan-requests/borrower/${borrowerId}`;
+          options.method = "GET";
+          // Remove Content-Type and body for GET request
+          if (options.headers) {
+            // @ts-ignore
+            delete options.headers["Content-Type"];
+          }
+          delete options.body; // Ensure body is not sent
+          break;
+        case "transactions":
+          url = `${API_BASE_URL}/api/transactions`;
+          options.method = "GET";
+          if (options.headers) {
+            // @ts-ignore
+            delete options.headers["Content-Type"];
+          }
+          delete options.body; // Ensure body is not sent
+          break;
+        default:
+          console.error("Unknown badge type:", type);
+          return;
+      }
+
+      // Simulate user sending the initial prompt if one exists for context
+      if (prompt) {
+        append({
+          id: window.crypto.randomUUID(),
+          role: "user",
+          content: prompt,
+        });
+      }
+
+      const response = await fetch(url, options);
+
+      console.log(response);
+
+      if (!response.ok) {
+        throw new Error(
+          `API request failed for type \'${type}\' with status ${response.status}`
+        );
+      }
+
+      const result = await response.json();
+      let content = "";
+
+      // Handle response based on type
+      switch (type) {
+        case "stock":
+          // Assuming stock search also returns a { status: 'success', data: '...' } structure for now
+          if (result.status === "success" && result.data) {
+            content = result.data;
+          } else {
+            content = `Received data for ${type}, but couldn\'t extract details.`;
+            console.warn(`Unexpected response structure for ${type}:`, result);
+          }
+          break;
+        case "loan":
+          if (
+            result.status === "success" &&
+            result.data &&
+            Array.isArray(result.data.loan_requests)
+          ) {
+            const loanRequests = result.data.loan_requests;
+            content = "Here are your current loan requests:\n\n";
+            if (loanRequests.length > 0) {
+              content += loanRequests
+                .map(
+                  (
+                    req: any // Use 'any' for now, define a LoanRequest type later
+                  ) =>
+                    `- **Amount:** ${req.amount}, **Purpose:** ${req.purpose}, **Status:** ${req.status}, **Interest:** ${req.interest_rate}%, **Duration:** ${req.loan_duration} months`
+                )
+                .join("\n");
+            } else {
+              content += "No loan requests found.";
+            }
+          } else {
+            content =
+              "Received loan request data, but couldn\'t parse the list.";
+            console.warn(
+              "Unexpected response structure for loan requests:",
+              result
+            );
+          }
+          break;
+        case "transactions":
+          if (
+            result.status === "success" &&
+            result.data &&
+            Array.isArray(result.data.transactions)
+          ) {
+            const transactions = result.data.transactions;
+            // Format the transactions for display
+            content = `Here are your recent transactions (Page ${result.data.meta.page || 1}):\n\n`;
+            if (transactions.length > 0) {
+              content += transactions
+                .map(
+                  (
+                    tx: any // Using 'any' for now, consider defining a Transaction type
+                  ) =>
+                    `- **${tx.transaction_type}**: ${tx.amount} on ${new Date(tx.transaction_date).toLocaleDateString()} - Ref: ${tx.reference || "N/A"}`
+                )
+                .join("\n");
+            } else {
+              content += "No transactions found.";
+            }
+          } else {
+            content =
+              "Received transaction data, but couldn\'t parse the list.";
+            console.warn(
+              "Unexpected response structure for transactions:",
+              result
+            );
+          }
+          break;
+        default:
+          content = `Received data for unknown type ${type}.`;
+          console.warn(`Received response for unknown type ${type}:`, result);
+      }
+
+      // Append AI response
+      append({
+        id: window.crypto.randomUUID(),
+        role: "assistant", // Append as assistant response
+        content: content,
       });
-    },
-  });
+    } catch (error) {
+      console.error(`Error fetching badge response for type '${type}':`, error);
+      // Optionally append an error message to the chat
+      append({
+        id: window.crypto.randomUUID(),
+        role: "assistant",
+        content: `Sorry, I encountered an error while processing the request for ${type}.`,
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col items-center min-h-screen w-full">
@@ -184,6 +401,7 @@ function RouteComponent() {
             input={input}
             handleInputChange={handleInputChange}
             handleSubmit={handleSubmit}
+            handleBadgeClick={handleBadgeClick}
           />
         </div>
       ) : (
