@@ -21,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 // Define types for badge actions
 type BadgeAction = {
   type: "stock" | "loan" | "transactions";
-  prompt?: string; // Optional prompt for specific actions like stock search
+  prompt: string; // Make prompt mandatory to represent user intent
 };
 
 export const Route = createFileRoute("/_main/dashboard/chat")({
@@ -55,13 +55,13 @@ function EmptyState({
           handleSubmit={handleSubmit}
         />
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 ml-4">
           <Badge
             className="cursor-pointer"
             onClick={() =>
               handleBadgeClick({
                 type: "stock",
-                prompt: "Current Stock Price of Apple",
+                prompt: "What is the current stock price of Apple?", // More conversational prompt
               })
             } // Pass type and prompt
           >
@@ -75,9 +75,13 @@ function EmptyState({
 
           <Badge
             className="cursor-pointer"
-            onClick={() =>
-              handleBadgeClick({ type: "loan", prompt: "Loan request" })
-            } // Pass type and prompt (assuming search for now)
+            onClick={
+              () =>
+                handleBadgeClick({
+                  type: "loan",
+                  prompt: "Show my loan requests",
+                }) // Updated prompt
+            } // Pass type and prompt
           >
             <CreditCardIcon
               className="-ms-0.5 opacity-60"
@@ -89,7 +93,12 @@ function EmptyState({
 
           <Badge
             className="cursor-pointer"
-            onClick={() => handleBadgeClick({ type: "transactions" })} // Pass only type
+            onClick={() =>
+              handleBadgeClick({
+                type: "transactions",
+                prompt: "Show my recent transactions", // Added prompt
+              })
+            } // Pass type and prompt
           >
             <ClockIcon
               className="-ms-0.5 opacity-60"
@@ -279,15 +288,6 @@ function RouteComponent() {
           return;
       }
 
-      // Simulate user sending the initial prompt if one exists for context
-      if (prompt) {
-        append({
-          id: window.crypto.randomUUID(),
-          role: "user",
-          content: prompt,
-        });
-      }
-
       const response = await fetch(url, options);
 
       console.log(response);
@@ -376,10 +376,10 @@ function RouteComponent() {
           console.warn(`Received response for unknown type ${type}:`, result);
       }
 
-      // Append AI response
+      // Append the fetched data as a single user message
       append({
         id: window.crypto.randomUUID(),
-        role: "assistant", // Append as assistant response
+        role: "user", // Append data as user message
         content: content,
       });
     } catch (error) {
