@@ -12,3 +12,7 @@ export function CreateTransactionData(url: string){
 export async function GetTransactionData() {
     return http.get<TransactionsResponse>("/transactions/")
 }
+
+export function GetAllAccounts(){
+    return http.get("/accounts/")
+}

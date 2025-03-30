@@ -5,12 +5,12 @@ import { createFileRoute } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import { DollarSign } from "lucide-react"
+import { Wallet } from "lucide-react"
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts"
 
 import { Link } from "@tanstack/react-router"
 import { useQuery } from "@tanstack/react-query"
-import { GetTransactionData } from "@/services/account"
+import { GetTransactionData, GetAllAccounts } from "@/services/account"
 
 interface TransactionsResponse {
   status: string
@@ -51,7 +51,7 @@ interface Account {
 const accountsData: Account[] = [
   { id: "1", name: "Fidelity Bank", balance: 5000, currency: "₵" ,type : "bank" },
   { id: "2", name: "MTN Mobile Money", balance: 1200, currency: "₵" , type : "wallet"},
-  { id: "3", name: "Acheive", balance: 800, currency: "₵", type : "wallet" },
+  { id: "3", name: "Achieve by petra", balance: 800, currency: "₵", type : "wallet" },
   { id: "4", name: "Accrue", balance: 300, currency: "₵" , type : "wallet"},
 ]
 
@@ -149,6 +149,13 @@ function RouteComponent() {
     queryFn: GetTransactionData,
   })
 
+  const {data:wallets } = useQuery({
+    queryKey:["wallets"],
+    queryFn:GetAllAccounts
+  })
+
+  console.log("account",wallets)
+
   const chartData = processTransactionDataByWeek(data?.data?.transactions)
 
   return (
@@ -167,7 +174,7 @@ function RouteComponent() {
           <Card className="w-full cursor-pointer md:h-full h-[150px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">My Balance</CardTitle>
-              <DollarSign className="w-4 h-4 text-muted-foreground" />
+              <Wallet className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-start">
@@ -182,7 +189,7 @@ function RouteComponent() {
           <Card className="w-full cursor-pointer md:h-full h-[150px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Monthly Income</CardTitle>
-              <DollarSign className="w-4 h-4 text-muted-foreground" />
+              <Wallet className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-start">
@@ -200,7 +207,7 @@ function RouteComponent() {
           <Card className="w-full cursor-pointer md:h-full h-[150px]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Monthly Expenses</CardTitle>
-              <DollarSign className="w-4 h-4 text-muted-foreground" />
+              <Wallet className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-start">
@@ -322,7 +329,7 @@ function RouteComponent() {
                     <TableCell
                       className={transaction.transaction_type === "CREDIT" ? "text-green-700" : "text-red-500"}
                     >
-                      {transaction.transaction_type === "CREDIT" ? "+" : "-"}${transaction.amount.toFixed(2)}
+                      {transaction.transaction_type === "CREDIT" ? "+" : "-"}₵{transaction.amount.toFixed(2)}
                     </TableCell>
                     <TableCell>{transaction.transaction_type}</TableCell>
                     <TableCell>{transaction.reference}</TableCell>
