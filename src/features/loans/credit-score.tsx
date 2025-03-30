@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+import { GenerateCreditScore } from "@/services/loans";
 import {
   Label,
   PolarGrid,
@@ -58,13 +59,13 @@ type ChartDataItem = {
   fill: string;
 };
 
-export default function CreditScoreCard() {
+export default async function CreditScoreCard() {
   // Sample credit score
-  const creditScore = 720;
-  const { status, color, loanChance } = getScoreStatus(creditScore);
+  const response = await GenerateCreditScore("userId");
+  const { status, color, loanChance } = getScoreStatus(response.data.credit_score);
 
   // Calculate percentage for chart (out of 1000)
-  const scorePercentage = (creditScore / 1000) * 100;
+  const scorePercentage = (response.data.credit_score / 1000) * 100;
 
   const chartData: ChartDataItem[] = [
     { name: "Credit Score", score: scorePercentage, fill: color },
@@ -119,7 +120,7 @@ export default function CreditScoreCard() {
                           y={(viewBox.cy ?? 0) - 12}
                           className="fill-foreground text-4xl font-bold"
                         >
-                          {creditScore}
+                          {response.data.credit_score}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
